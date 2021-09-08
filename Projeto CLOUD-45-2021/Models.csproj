@@ -1,0 +1,8 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <RootNamespace>Projeto_CLOUD_45_2021</RootNamespace>
+  </PropertyGroup>
+
+</Project>
