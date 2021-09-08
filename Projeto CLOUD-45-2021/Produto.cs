@@ -26,6 +26,7 @@ namespace Projeto_CLOUD_45_2021
         public string Foto { get; set; } //Url blob storage
 
         [ForeignKey("Categoria")]
+        public int CategoriaId { get; set; }
         public Categoria Categoria { get; set; }
 
         public ICollection<Encomenda> Encomendas { get; set; }

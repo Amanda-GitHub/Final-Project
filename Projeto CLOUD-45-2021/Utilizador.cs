@@ -27,6 +27,8 @@ namespace Projeto_CLOUD_45_2021
         public string CodigoPostal { get; set; }
 
         public ICollection<Encomenda> Encomendas { get; set; }
+
+        public ICollection<Fatura> Faturas { get; set; }
         
         
 

@@ -21,11 +21,14 @@ namespace Projeto_CLOUD_45_2021
         public float ValorTotal { get; set; }
 
         [ForeignKey("Utilizador")]
+        public int UtilizadorId { get; set; }
         public Utilizador Utilizador { get; set; }
 
         [ForeignKey("Produto")]
+        public int ProdutoId { get; set; }
         public Produto Produto { get; set; }
 
+        public ICollection<Fatura> Faturas { get; set; }
 
     }
 }
