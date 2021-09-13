@@ -13,7 +13,7 @@ namespace Projeto_CLOUD_45_2021
         public int Contribuinte { get; set; }
         [Display(Name = "Data de Nascimento")]
         public DateTime DataNascimento { get; set; }
-        public int Telefone { get; set; }
+        public string Telefone { get; set; }
         public string Email { get; set; }
         [Display(Name = "Data de registo")]
         public DateTime DataRegisto { get; set; } = DateTime.UtcNow;
@@ -21,7 +21,7 @@ namespace Projeto_CLOUD_45_2021
         public string Morada { get; set; }
         [Display(Name = "Número")]
         public int Numero { get; set; }
-        public string Andar { get; set; }
+        public string? Andar { get; set; }
         public string Localidade { get; set; }
         [Display(Name = "Código Postal")]
         public string CodigoPostal { get; set; }

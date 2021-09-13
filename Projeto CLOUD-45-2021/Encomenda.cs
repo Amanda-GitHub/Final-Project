@@ -10,6 +10,7 @@ namespace Projeto_CLOUD_45_2021
 {
     public class Encomenda
     {
+        [Key]
         public int EncomendaId { get; set; }
 
         [Display(Name = "Data da Encomenda")]

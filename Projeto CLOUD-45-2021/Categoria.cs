@@ -9,6 +9,7 @@ namespace Projeto_CLOUD_45_2021
 {
     public class Categoria
     {
+        [Key]
         public int CategoriaId { get; set; }
 
         [Display(Name = "Categoria")]

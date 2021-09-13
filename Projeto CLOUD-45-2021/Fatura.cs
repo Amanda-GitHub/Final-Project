@@ -16,16 +16,12 @@ namespace Projeto_CLOUD_45_2021
         
 
         [Display(Name = "Data de Emissão")]
-        public DateTime DataEmissao { get; set; }
-
-        [ForeignKey("Utilizador")]
-        public int UtilizadorId { get; set; }
-        public Utilizador Utilizador { get; set; }
+        public DateTime DataEmissao { get; set; }        
 
         [ForeignKey("Encomenda")]
         public int EncomendaId { get; set; }
         public Encomenda Encomenda { get; set; }
-
+       
         [Display(Name = "Valor Total")]
         public float ValorTotal { get; set; }
     }
