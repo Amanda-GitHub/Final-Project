@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Projeto_CLOUD_45_2021;
+using Projeto_CLOUD_45_2021.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;

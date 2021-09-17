@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Api.Migrations
 {
-    public partial class PrimeiraMigracao : Migration
+    public partial class Criação : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -140,7 +140,7 @@ namespace Api.Migrations
             migrationBuilder.InsertData(
                 table: "Utilizadores",
                 columns: new[] { "UtilizadorId", "Andar", "CodigoPostal", "Contribuinte", "DataNascimento", "DataRegisto", "Email", "Localidade", "Morada", "Nome", "Numero", "Password", "Telefone" },
-                values: new object[] { 1, "2º esq", "2800-000", 123456789, new DateTime(1986, 2, 7, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2021, 9, 13, 17, 18, 57, 215, DateTimeKind.Local).AddTicks(9177), "amanda@gmail.com", "Lisboa", "Rua da Judiaria", "Amanda Nunes", 21, "123@123", "212212212" });
+                values: new object[] { 1, "2º esq", "2800-000", 123456789, new DateTime(1986, 2, 7, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2021, 9, 13, 18, 59, 42, 438, DateTimeKind.Local).AddTicks(2440), "amanda@gmail.com", "Lisboa", "Rua da Judiaria", "Amanda Nunes", 21, "123@123", "212212212" });
 
             migrationBuilder.InsertData(
                 table: "Produtos",

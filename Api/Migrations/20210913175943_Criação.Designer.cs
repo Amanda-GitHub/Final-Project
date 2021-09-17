@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Api.Migrations
 {
     [DbContext(typeof(DataBaseContext))]
-    [Migration("20210913161857_PrimeiraMigracao")]
-    partial class PrimeiraMigracao
+    [Migration("20210913175943_Criação")]
+    partial class Criação
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -21,7 +21,7 @@ namespace Api.Migrations
                 .HasAnnotation("ProductVersion", "5.0.9")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("Projeto_CLOUD_45_2021.Categoria", b =>
+            modelBuilder.Entity("Projeto_CLOUD_45_2021.Models.Categoria", b =>
                 {
                     b.Property<int>("CategoriaId")
                         .ValueGeneratedOnAdd()
@@ -56,7 +56,7 @@ namespace Api.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Projeto_CLOUD_45_2021.Encomenda", b =>
+            modelBuilder.Entity("Projeto_CLOUD_45_2021.Models.Encomenda", b =>
                 {
                     b.Property<int>("EncomendaId")
                         .ValueGeneratedOnAdd()
@@ -87,7 +87,7 @@ namespace Api.Migrations
                     b.ToTable("Encomendas");
                 });
 
-            modelBuilder.Entity("Projeto_CLOUD_45_2021.Fatura", b =>
+            modelBuilder.Entity("Projeto_CLOUD_45_2021.Models.Fatura", b =>
                 {
                     b.Property<int>("FaturaId")
                         .ValueGeneratedOnAdd()
@@ -115,7 +115,7 @@ namespace Api.Migrations
                     b.ToTable("Faturas");
                 });
 
-            modelBuilder.Entity("Projeto_CLOUD_45_2021.Produto", b =>
+            modelBuilder.Entity("Projeto_CLOUD_45_2021.Models.Produto", b =>
                 {
                     b.Property<int>("ProdutoId")
                         .ValueGeneratedOnAdd()
@@ -159,7 +159,7 @@ namespace Api.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Projeto_CLOUD_45_2021.Utilizador", b =>
+            modelBuilder.Entity("Projeto_CLOUD_45_2021.Models.Utilizador", b =>
                 {
                     b.Property<int>("UtilizadorId")
                         .ValueGeneratedOnAdd()
@@ -214,7 +214,7 @@ namespace Api.Migrations
                             CodigoPostal = "2800-000",
                             Contribuinte = 123456789,
                             DataNascimento = new DateTime(1986, 2, 7, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DataRegisto = new DateTime(2021, 9, 13, 17, 18, 57, 215, DateTimeKind.Local).AddTicks(9177),
+                            DataRegisto = new DateTime(2021, 9, 13, 18, 59, 42, 438, DateTimeKind.Local).AddTicks(2440),
                             Email = "amanda@gmail.com",
                             Localidade = "Lisboa",
                             Morada = "Rua da Judiaria",
@@ -225,15 +225,15 @@ namespace Api.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Projeto_CLOUD_45_2021.Encomenda", b =>
+            modelBuilder.Entity("Projeto_CLOUD_45_2021.Models.Encomenda", b =>
                 {
-                    b.HasOne("Projeto_CLOUD_45_2021.Produto", "Produto")
+                    b.HasOne("Projeto_CLOUD_45_2021.Models.Produto", "Produto")
                         .WithMany("Encomendas")
                         .HasForeignKey("ProdutoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Projeto_CLOUD_45_2021.Utilizador", "Utilizador")
+                    b.HasOne("Projeto_CLOUD_45_2021.Models.Utilizador", "Utilizador")
                         .WithMany("Encomendas")
                         .HasForeignKey("UtilizadorId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -244,24 +244,24 @@ namespace Api.Migrations
                     b.Navigation("Utilizador");
                 });
 
-            modelBuilder.Entity("Projeto_CLOUD_45_2021.Fatura", b =>
+            modelBuilder.Entity("Projeto_CLOUD_45_2021.Models.Fatura", b =>
                 {
-                    b.HasOne("Projeto_CLOUD_45_2021.Encomenda", "Encomenda")
+                    b.HasOne("Projeto_CLOUD_45_2021.Models.Encomenda", "Encomenda")
                         .WithMany("Faturas")
                         .HasForeignKey("EncomendaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Projeto_CLOUD_45_2021.Utilizador", null)
+                    b.HasOne("Projeto_CLOUD_45_2021.Models.Utilizador", null)
                         .WithMany("Faturas")
                         .HasForeignKey("UtilizadorId");
 
                     b.Navigation("Encomenda");
                 });
 
-            modelBuilder.Entity("Projeto_CLOUD_45_2021.Produto", b =>
+            modelBuilder.Entity("Projeto_CLOUD_45_2021.Models.Produto", b =>
                 {
-                    b.HasOne("Projeto_CLOUD_45_2021.Categoria", "Categoria")
+                    b.HasOne("Projeto_CLOUD_45_2021.Models.Categoria", "Categoria")
                         .WithMany("Produtos")
                         .HasForeignKey("CategoriaId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -270,22 +270,22 @@ namespace Api.Migrations
                     b.Navigation("Categoria");
                 });
 
-            modelBuilder.Entity("Projeto_CLOUD_45_2021.Categoria", b =>
+            modelBuilder.Entity("Projeto_CLOUD_45_2021.Models.Categoria", b =>
                 {
                     b.Navigation("Produtos");
                 });
 
-            modelBuilder.Entity("Projeto_CLOUD_45_2021.Encomenda", b =>
+            modelBuilder.Entity("Projeto_CLOUD_45_2021.Models.Encomenda", b =>
                 {
                     b.Navigation("Faturas");
                 });
 
-            modelBuilder.Entity("Projeto_CLOUD_45_2021.Produto", b =>
+            modelBuilder.Entity("Projeto_CLOUD_45_2021.Models.Produto", b =>
                 {
                     b.Navigation("Encomendas");
                 });
 
-            modelBuilder.Entity("Projeto_CLOUD_45_2021.Utilizador", b =>
+            modelBuilder.Entity("Projeto_CLOUD_45_2021.Models.Utilizador", b =>
                 {
                     b.Navigation("Encomendas");
 

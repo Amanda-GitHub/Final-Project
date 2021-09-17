@@ -1,0 +1,59 @@
+﻿@model IEnumerable<Projeto_CLOUD_45_2021.Models.Utilizador>
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Utilizadores</h2>
+
+<p>
+
+    <div class="form-group">
+        <input type="button" asp-action="Create" value="Novo Utilizador" class="btn btn-primary" />
+    </div>
+<p>
+    @Html.ActionLink("Criar Novo Utilizador", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Nome)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Email)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Telefone)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Contribuinte)
+        </th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Nome)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Telefone)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Contribuinte)
+            </td>
+            <td>
+                @Html.ActionLink("Editar", "Edit", new { id = item.UtilizadorId }) |
+                @Html.ActionLink("Detalhes", "Details", new { id = item.UtilizadorId }) |
+                @Html.ActionLink("Deletar", "Delete", new { id = item.UtilizadorId },
+               new { onclick = "return confirm('Deseja realmente deletar este utilizador?');" })
+            </td>
+        </tr>
+    }
+    <tr>
+        <td>
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        </td>
+    </tr>
+</table>

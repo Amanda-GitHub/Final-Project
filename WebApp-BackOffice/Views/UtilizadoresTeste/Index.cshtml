@@ -1,0 +1,105 @@
+﻿@{ 
+    ViewBag.Title = "Utilizador";
+    Layout = "~/Views/Shared/_layout.cshtml";
+
+}
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+<h2>Crie um novo utilizador</h2>
+<div class="form-group" style="display:none;">
+    <input id="txtUtilizadorId" class="form-control" name="UtilizadorId" />
+</div>
+<div class="form-group">
+    <label for="Nome">Nome:</label>
+    <input id="txtUtilizadorNome" class="form-control" name="Nome" />
+</div>
+<div class="form-group">
+    <label for="Contribuinte">Contribuinte:</label>
+    <input id="txtUtilizadorCont" class="form-control" name="Contribuinte" />
+</div>
+<div class="text-center panel-body">
+    <button id="btnGuardar" class="btn btn-sm btn-primary">Guardar</button>
+</div>
+
+<br />
+
+<button onclick="GetUtilizadores()" class="btn btn-primary">Carregar utilizadores</button>
+
+<br />
+
+<h2>Lista de utilizadores</h2>
+<table id="tblUtilizadores" class="table table-sm table-striped table-bordered m-2">
+    <thead>
+        <tr>
+            <th>Utilizador Id</th>
+            <th>Nome</th>
+            <th>Contribuinte</th>
+            <th>Ação</th>
+        </tr>     
+    </thead>
+</table>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+    });
+
+    function GetUtilizadores() {
+        $.getJSON("/UtilizadoresTeste/GetUtilizadores", function (utilizadores) {
+            $("#tblUtilizadores tbody tr").remove();
+            $.map(utilizadores, function (utilizador) {
+                $("#tblUtilizadores tbody").append("<tr>"
+                    + " <td>" + utilizador.UtilizadorId + "</td>"
+                    + " <td>" + utilizador.Nome + "</td>"
+                    + " <td>" + utilizador.Contribuinte + "</td>"
+                    + " <td>"
+                    + "     <button class='btn-success' onclick='Edit(" + utilizador.UtilizadorId + ")' style='margin-right:5px;'>Editar</button>"
+                    + "     <button class='btn-danger' onclick='Delete(" + utilizador.UtilizadorId + ")'>Deletar</button>"
+                    + " </td> "
+                    + "</tr>");
+
+            });
+        });
+    }
+
+    function Edit(utilizadorId) {
+        if (utilizadorId > 0) {
+            $.getJSON("/UtilizadoresTeste/GetUtilizadoresbyId?utilizadorId=" + utilizadorId, function (utilizador) {
+                $("#txtUtilizadorId").val(utilizador.UtilizadorId);
+                $("#txtUtilizadorNome").val(utilizador.Nome);
+                $("#txtUtilizadorCont").val(utilizador.Contribuinte);
+            });
+        }
+    }
+
+    function Delete(utilizadorId) {
+        if (utilizadorId > 0) {
+            $.ajax({
+                url: '/UtilizadoresTeste/Delete?utilizadorId=' + utilizadorId,
+                type: 'DELETE',
+                dataType: 'json',
+                success: function (data) {
+                },
+                error: function (ex) {
+                    console.log('Erro na Operação');
+                }
+
+            });
+        }
+    }
+
+    $("#btnGuardar").click(function () {
+        var utilizador = {
+            UtilizadorId: $("#txtUtilizadorId").val(),
+            Nome: $("#txtUtilizadorNome").val(),
+            Contribuinte: $("#txtUtilizadorCont").val(),
+        };
+
+        $.post("/UtilizadoresTeste/AtualizarUtilizador")
+            .done(function (data) {
+                GetUtilizadores
+            });
+    });
+
+</script>

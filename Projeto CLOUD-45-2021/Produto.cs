@@ -6,12 +6,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Projeto_CLOUD_45_2021
+namespace Projeto_CLOUD_45_2021.Models
 {
     public class Produto
     {
         [Key]
         public int ProdutoId { get; set; }
+      
         [Display(Name ="Nome Comum")]
         public string NomeComum { get; set; }
 
@@ -20,7 +21,7 @@ namespace Projeto_CLOUD_45_2021
 
         [Display(Name = "Descrição")]
         public string Descricao { get; set; }
-
+        
         [Display(Name = "Preço")]
         public float Preco { get; set; }
         public string Foto { get; set; } //Url blob storage

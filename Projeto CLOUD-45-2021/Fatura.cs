@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Projeto_CLOUD_45_2021
+namespace Projeto_CLOUD_45_2021.Models
 {
     public class Fatura
     {
