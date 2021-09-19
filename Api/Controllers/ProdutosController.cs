@@ -81,9 +81,9 @@ namespace Api.Controllers
         [HttpPost]
         public async Task<ActionResult<Produto>> PostProduto(Produto produto)
         {
-            produto.Categoria = _context.Categorias.Find(produto.Categoria.CategoriaId);
+            
             _context.Produtos.Add(produto);
-            await _context.SaveChangesAsync();           
+            await _context.SaveChangesAsync();
 
 
             return CreatedAtAction("GetProduto", new { id = produto.ProdutoId }, produto);

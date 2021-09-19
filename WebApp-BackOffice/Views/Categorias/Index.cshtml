@@ -16,11 +16,8 @@
                 @Html.DisplayNameFor(model => model.Nome)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Interior)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Exterior)
-            </th>
+                @Html.DisplayNameFor(model => model.Tipo)
+            </th>            
             <th>Ações</th>
         </tr>    
     <tbody>
@@ -30,11 +27,8 @@
                 @Html.DisplayFor(modelItem => item.Nome)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Interior)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Exterior)
-            </td>
+                @Html.DisplayFor(modelItem => item.Tipo)
+            </td>            
             <td>
                 <a class="btn btn-secondary" asp-action="Edit" asp-route-id="@item.CategoriaId">Editar</a>
                 <a class="btn btn-secondary" asp-action="Details" asp-route-id="@item.CategoriaId">Ver detalhes</a>

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Api.Migrations
 {
-    public partial class Criação : Migration
+    public partial class Inicial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -14,8 +14,7 @@ namespace Api.Migrations
                     CategoriaId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Nome = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Interior = table.Column<bool>(type: "bit", nullable: true),
-                    Exterior = table.Column<bool>(type: "bit", nullable: true)
+                    Tipo = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -129,18 +128,18 @@ namespace Api.Migrations
 
             migrationBuilder.InsertData(
                 table: "Categorias",
-                columns: new[] { "CategoriaId", "Exterior", "Interior", "Nome" },
-                values: new object[] { 1, null, true, "Plantas" });
+                columns: new[] { "CategoriaId", "Nome", "Tipo" },
+                values: new object[] { 1, "Plantas", "Interior" });
 
             migrationBuilder.InsertData(
                 table: "Categorias",
-                columns: new[] { "CategoriaId", "Exterior", "Interior", "Nome" },
-                values: new object[] { 2, true, null, "Plantas" });
+                columns: new[] { "CategoriaId", "Nome", "Tipo" },
+                values: new object[] { 2, "Plantas", "Interior" });
 
             migrationBuilder.InsertData(
                 table: "Utilizadores",
                 columns: new[] { "UtilizadorId", "Andar", "CodigoPostal", "Contribuinte", "DataNascimento", "DataRegisto", "Email", "Localidade", "Morada", "Nome", "Numero", "Password", "Telefone" },
-                values: new object[] { 1, "2º esq", "2800-000", 123456789, new DateTime(1986, 2, 7, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2021, 9, 13, 18, 59, 42, 438, DateTimeKind.Local).AddTicks(2440), "amanda@gmail.com", "Lisboa", "Rua da Judiaria", "Amanda Nunes", 21, "123@123", "212212212" });
+                values: new object[] { 1, "2º esq", "2800-000", 123456789, new DateTime(1986, 2, 7, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2021, 9, 19, 19, 2, 23, 920, DateTimeKind.Local).AddTicks(5540), "amanda@gmail.com", "Lisboa", "Rua da Judiaria", "Amanda Nunes", 21, "123@123", "212212212" });
 
             migrationBuilder.InsertData(
                 table: "Produtos",

@@ -15,8 +15,7 @@ namespace Projeto_CLOUD_45_2021.Models
 
         [Display(Name = "Categoria")]
         public string Nome { get; set; }
-        public bool? Interior { get; set; }
-        public bool? Exterior { get; set; }        
+        public string Tipo { get; set; }
 
         public ICollection<Produto> Produtos { get; set; }
     }

@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Api.Migrations
 {
     [DbContext(typeof(DataBaseContext))]
-    [Migration("20210913175943_Criação")]
-    partial class Criação
+    [Migration("20210919180224_Inicial")]
+    partial class Inicial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -28,13 +28,10 @@ namespace Api.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<bool?>("Exterior")
-                        .HasColumnType("bit");
-
-                    b.Property<bool?>("Interior")
-                        .HasColumnType("bit");
-
                     b.Property<string>("Nome")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Tipo")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("CategoriaId");
@@ -45,14 +42,14 @@ namespace Api.Migrations
                         new
                         {
                             CategoriaId = 1,
-                            Interior = true,
-                            Nome = "Plantas"
+                            Nome = "Plantas",
+                            Tipo = "Interior"
                         },
                         new
                         {
                             CategoriaId = 2,
-                            Exterior = true,
-                            Nome = "Plantas"
+                            Nome = "Plantas",
+                            Tipo = "Interior"
                         });
                 });
 
@@ -214,7 +211,7 @@ namespace Api.Migrations
                             CodigoPostal = "2800-000",
                             Contribuinte = 123456789,
                             DataNascimento = new DateTime(1986, 2, 7, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DataRegisto = new DateTime(2021, 9, 13, 18, 59, 42, 438, DateTimeKind.Local).AddTicks(2440),
+                            DataRegisto = new DateTime(2021, 9, 19, 19, 2, 23, 920, DateTimeKind.Local).AddTicks(5540),
                             Email = "amanda@gmail.com",
                             Localidade = "Lisboa",
                             Morada = "Rua da Judiaria",
