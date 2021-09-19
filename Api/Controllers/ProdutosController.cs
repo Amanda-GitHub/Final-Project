@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Api.Data;
 using Projeto_CLOUD_45_2021.Models;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Api.Controllers
 {
@@ -25,14 +26,16 @@ namespace Api.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Produto>>> GetProdutos()
         {
-            return await _context.Produtos.ToListAsync();
+            var produtos = _context.Produtos.Include(p => p.Categoria);
+            return await produtos.ToListAsync();
         }
 
         // GET: api/Produtos/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Produto>> GetProduto(int id)
         {
-            var produto = await _context.Produtos.FindAsync(id);
+
+            var produto = await _context.Produtos.Include(p => p.Categoria).FirstOrDefaultAsync(m => m.ProdutoId == id);
 
             if (produto == null)
             {
@@ -50,9 +53,9 @@ namespace Api.Controllers
             if (id != produto.ProdutoId)
             {
                 return BadRequest();
-            }
-
-            _context.Entry(produto).State = EntityState.Modified;
+            }            
+            
+            _context.Entry(produto).State = EntityState.Modified; 
 
             try
             {
@@ -68,7 +71,7 @@ namespace Api.Controllers
                 {
                     throw;
                 }
-            }
+            }            
 
             return NoContent();
         }
@@ -78,8 +81,10 @@ namespace Api.Controllers
         [HttpPost]
         public async Task<ActionResult<Produto>> PostProduto(Produto produto)
         {
+            produto.Categoria = _context.Categorias.Find(produto.Categoria.CategoriaId);
             _context.Produtos.Add(produto);
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();           
+
 
             return CreatedAtAction("GetProduto", new { id = produto.ProdutoId }, produto);
         }
@@ -88,7 +93,8 @@ namespace Api.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteProduto(int id)
         {
-            var produto = await _context.Produtos.FindAsync(id);
+            var produto = await _context.Produtos.Include(p => p.Categoria).FirstOrDefaultAsync(m => m.ProdutoId == id);
+
             if (produto == null)
             {
                 return NotFound();

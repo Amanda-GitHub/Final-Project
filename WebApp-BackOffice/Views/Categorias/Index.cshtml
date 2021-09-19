@@ -1,0 +1,46 @@
+﻿@model IEnumerable<Projeto_CLOUD_45_2021.Models.Categoria>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Gestão de Categorias</h1>
+
+<p>
+    <a class="btn btn-secondary" asp-action="Create">Nova Categoria</a>
+</p>
+<table class="table table-borderless table-hover">    
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Nome)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Interior)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Exterior)
+            </th>
+            <th>Ações</th>
+        </tr>    
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Nome)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Interior)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Exterior)
+            </td>
+            <td>
+                <a class="btn btn-secondary" asp-action="Edit" asp-route-id="@item.CategoriaId">Editar</a>
+                <a class="btn btn-secondary" asp-action="Details" asp-route-id="@item.CategoriaId">Ver detalhes</a>
+                <a class="btn btn-secondary" onclick="return confirm('Deseja realmente deletar esta categoria?')" asp-action="Delete" asp-route-id="@item.CategoriaId">Deletar</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

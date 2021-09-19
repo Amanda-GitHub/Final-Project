@@ -5,28 +5,25 @@ using Projeto_CLOUD_45_2021.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 
-
 namespace WebApp_BackOffice.Controllers
 {
     [Authorize]
-    public class UtilizadoresController : Controller
+    public class CategoriasController : Controller
     {
-
         public IActionResult Index()
         {
-            IEnumerable<Utilizador> utilizadores = null;
+            IEnumerable<Categoria> categorias = null;
 
             using (var client = new HttpClient())
             {
-                client.BaseAddress = new Uri("https://localhost:44365/api/Utilizadores");
+                client.BaseAddress = new Uri("https://localhost:44365/api/Categorias");
 
                 //HTTP GET
-                var responseTask = client.GetAsync("utilizadores");
+                var responseTask = client.GetAsync("categorias");
                 responseTask.Wait();
                 var result = responseTask.Result;
 
@@ -35,16 +32,16 @@ namespace WebApp_BackOffice.Controllers
                     var readTask = result.Content.ReadAsStringAsync();
                     readTask.Wait();
 
-                    utilizadores = JsonConvert.DeserializeObject<IList<Utilizador>>(readTask.Result);
+                    categorias = JsonConvert.DeserializeObject<IList<Categoria>>(readTask.Result);
                 }
                 else
                 {
-                    utilizadores = Enumerable.Empty<Utilizador>();
+                    categorias = Enumerable.Empty<Categoria>();
                     ModelState.AddModelError(string.Empty, "Erro no servidor. Contacte o Suporte.");
                 }
             }
 
-            return View(utilizadores);
+            return View(categorias);
         }
 
         [HttpGet]
@@ -54,19 +51,19 @@ namespace WebApp_BackOffice.Controllers
         }
 
         [HttpPost]
-        public ActionResult Create(Utilizador utilizador)
+        public ActionResult Create(Categoria categoria)
         {
-            if (utilizador == null)
+            if (categoria == null)
             {
-                return BadRequest();            
+                return BadRequest();
             }
 
 
             using (var client = new HttpClient())
             {
-                client.BaseAddress = new Uri("https://localhost:44365/api/Utilizadores");
+                client.BaseAddress = new Uri("https://localhost:44365/api/Categorias");
                 //HTTP POST
-                var postTask = client.PostAsJsonAsync<Utilizador>("utilizadores", utilizador);
+                var postTask = client.PostAsJsonAsync<Categoria>("categorias", categoria);
                 postTask.Wait();
                 var result = postTask.Result;
 
@@ -79,44 +76,44 @@ namespace WebApp_BackOffice.Controllers
 
             ModelState.AddModelError(string.Empty, "Erro no servidor.Contacte o Suporte.");
 
-            return View(utilizador);
+            return View(categoria);
         }
 
         [HttpGet]
         public ActionResult Edit(int? id)
-        {   
+        {
             if (id == null)
             {
                 return BadRequest();
             }
 
-            Utilizador utilizador = null;
+            Categoria categoria = null;
 
-            using (var client = new HttpClient())            
-            {            
-               client.BaseAddress = new Uri("https://localhost:44365/api/");
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri("https://localhost:44365/api/");
 
                 //HTTP GET
-                var responseTask = client.GetAsync("utilizadores/" + id.ToString());
+                var responseTask = client.GetAsync("categorias/" + id.ToString());
                 responseTask.Wait();
                 var result = responseTask.Result;
 
-               if (result.IsSuccessStatusCode)
+                if (result.IsSuccessStatusCode)
                 {
                     var readTask = result.Content.ReadAsStringAsync();
                     readTask.Wait();
 
-                    utilizador = JsonConvert.DeserializeObject<Utilizador>(readTask.Result);
+                    categoria = JsonConvert.DeserializeObject<Categoria>(readTask.Result);
 
                 }
-                return View(utilizador);
+                return View(categoria);
             }
         }
 
         [HttpPost]
-        public ActionResult Edit(int id, Utilizador utilizador)
+        public ActionResult Edit(int id, Categoria categoria)
         {
-            if (utilizador == null)
+            if (categoria == null)
             {
                 return BadRequest();
             }
@@ -126,7 +123,7 @@ namespace WebApp_BackOffice.Controllers
                 client.BaseAddress = new Uri("https://localhost:44365/api/");
 
                 //HTTP PUT
-                var putTask = client.PutAsJsonAsync<Utilizador>("utilizadores/" + id.ToString(), utilizador);
+                var putTask = client.PutAsJsonAsync<Categoria>("categorias/" + id.ToString(), categoria);
                 putTask.Wait();
                 var result = putTask.Result;
 
@@ -136,7 +133,7 @@ namespace WebApp_BackOffice.Controllers
                 }
             }
 
-            return View(utilizador);
+            return View(categoria);
         }
 
         public ActionResult Delete(int? id)
@@ -146,14 +143,14 @@ namespace WebApp_BackOffice.Controllers
                 return BadRequest();
             }
 
-            Utilizador utilizador = null;
+            Categoria categoria = null;
 
             using (var client = new HttpClient())
             {
                 client.BaseAddress = new Uri("https://localhost:44365/api/");
 
                 //HTTP DELETE
-                var deleteTask = client.DeleteAsync("utilizadores/" + id);
+                var deleteTask = client.DeleteAsync("categorias/" + id);
                 deleteTask.Wait();
                 var result = deleteTask.Result;
 
@@ -163,7 +160,7 @@ namespace WebApp_BackOffice.Controllers
                 }
             }
 
-            return View(utilizador);
+            return View(categoria);
         }
 
         public ActionResult Details(int? id)
@@ -173,14 +170,14 @@ namespace WebApp_BackOffice.Controllers
                 return BadRequest();
             }
 
-            Utilizador utilizador = null;
+            Categoria categoria = null;
 
             using (var client = new HttpClient())
             {
                 client.BaseAddress = new Uri("https://localhost:44365/api/");
 
                 //HTTP GET
-                var responseTask = client.GetAsync("utilizadores/" + id.ToString());
+                var responseTask = client.GetAsync("categorias/" + id.ToString());
                 responseTask.Wait();
                 var result = responseTask.Result;
 
@@ -189,44 +186,13 @@ namespace WebApp_BackOffice.Controllers
                     var readTask = result.Content.ReadAsStringAsync();
                     readTask.Wait();
 
-                    utilizador = JsonConvert.DeserializeObject<Utilizador>(readTask.Result);
+                    categoria = JsonConvert.DeserializeObject<Categoria>(readTask.Result);
 
                 }
             }
 
-            return View(utilizador);
-
+            return View(categoria);
         }
-
-        //public IActionResult Search(string nome)
-        //{
-        //    IEnumerable<Utilizador> utilizadores = null;
-        //    using (var client = new HttpClient())
-        //    {
-        //        client.BaseAddress = new Uri("https://localhost:44365/api/");
-
-        //        //HTTP GET
-        //        var responseTask = client.GetAsync("utilizadores?nome=" + nome);
-        //        responseTask.Wait();
-        //        var result = responseTask.Result;
-                
-        //        if (result.IsSuccessStatusCode)
-        //        {
-        //            var readTask = result.Content.ReadAsStringAsync();
-        //            readTask.Wait();
-
-        //            utilizadores = JsonConvert.DeserializeObject<IList<Utilizador>>(readTask.Result);
-        //        }
-        //        else
-        //        {
-        //            utilizadores = Enumerable.Empty<Utilizador>();
-        //            ModelState.AddModelError(string.Empty, "Erro no servidor. Contacte o Suporte.");
-        //        }
-
-        //    }
-        //    return View(utilizadores);
-        //}
-
 
     }
 }

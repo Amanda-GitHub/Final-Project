@@ -4,25 +4,28 @@
     ViewData["Title"] = "Edit";
 }
 
-<h1>Edit</h1>
-
-<h4>Utilizador</h4>
+<h1>Editar dados do Utilizador</h1>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="UtilizadorId" />
+            <input type="hidden" asp-for="Contribuinte" />
+            <input type="hidden" asp-for="DataNascimento" />
+            <input type="hidden" asp-for="Email" />
+            <input type="hidden" asp-for="DataRegisto" />
+            <input type="hidden" asp-for="Password" />
             <div class="form-group">
                 <label asp-for="Nome" class="control-label"></label>
                 <input asp-for="Nome" class="form-control" />
                 <span asp-validation-for="Nome" class="text-danger"></span>
-            </div>            
+            </div>
             <div class="form-group">
                 <label asp-for="Telefone" class="control-label"></label>
                 <input asp-for="Telefone" class="form-control" />
                 <span asp-validation-for="Telefone" class="text-danger"></span>
-            </div>                                   
+            </div>
             <div class="form-group">
                 <label asp-for="Morada" class="control-label"></label>
                 <input asp-for="Morada" class="form-control" />
@@ -49,13 +52,13 @@
                 <span asp-validation-for="CodigoPostal" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Guardar" class="btn btn-secondary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index" class="btn btn-secondary">Regressar à lista</a>
 </div>
 

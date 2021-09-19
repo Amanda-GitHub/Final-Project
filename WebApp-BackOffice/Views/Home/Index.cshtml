@@ -2,7 +2,39 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="jumbotron">
-    <h1>MVC Contatos</h1>
-    <p class="lead">Consumindo a Web API.</p>
+<div class="jumbotron text-center">
+    <h1>Área de Gestão administrativa</h1>
+</div>
+<br />
+<div class="jumbotron-fluid">
+    <div class="card-columns offset-3">        
+        <div class="card bg-light text-center">  
+            <br />
+            <i class="fas fa-users" style="font-size:40px"></i>           
+            <div class="card-body text-center">
+                <a class="card-text text-black-50 stretched-link" asp-controller="Utilizadores" asp-action="Index"><strong>Utilizadores</strong></a>
+            </div>
+        </div>
+        <div class="card bg-light text-center">
+            <br />
+            <i class="fab fa-product-hunt" style="font-size:40px"></i>
+            <div class="card-body text-center">
+                <a class="card-text text-black-50 stretched-link" asp-controller="Produtos" asp-action="Index"><strong>Produtos</strong></a>
+            </div>
+        </div>
+        <div class="card bg-light text-center">
+            <br />
+            <i class="fas fa-tags" style="font-size:40px"></i>
+            <div class="card-body text-center">
+                <a class="card-text text-black-50 stretched-link" asp-controller="Categorias" asp-action="Index"><strong>Categorias</strong></a>
+            </div>
+        </div>
+        <div class="card bg-light text-center">
+            <br />
+            <i class="fas fa-shopping-cart" style="font-size:40px"></i>
+            <div class="card-body text-center">
+                <a class="card-text text-black-50 stretched-link" asp-controller="Encomendas" asp-action="Index"><strong>Encomendas</strong></a>
+            </div>
+        </div>
+    </div>
 </div>

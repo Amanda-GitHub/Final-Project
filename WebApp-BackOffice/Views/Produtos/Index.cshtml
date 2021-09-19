@@ -1,0 +1,54 @@
+﻿@model IEnumerable<Projeto_CLOUD_45_2021.Models.Produto>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Gestão de Produtos</h2>
+
+<p>
+    <a asp-action="Create" class="btn btn-secondary">Novo Produto</a>
+</p>
+
+<table class="table table-borderless table-hover">    
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.NomeComum)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NomeCientífico)
+            </th>           
+            <th>
+                @Html.DisplayNameFor(model => model.Preco)
+            </th>            
+            <th>
+                @Html.DisplayNameFor(model => model.Categoria)
+            </th>
+            <th>Ações</th>
+        </tr>    
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NomeComum)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NomeCientífico)
+                </td>               
+                <td>
+                    @Html.DisplayFor(modelItem => item.Preco)
+                </td>                
+                <td>
+                    @Html.DisplayFor(modelItem => item.Categoria.Nome)
+                </td>
+                <td>
+                    <a class="btn btn-secondary" asp-action="Edit" asp-route-id="@item.ProdutoId">Editar</a>
+                    <a class="btn btn-secondary" asp-action="Details" asp-route-id="@item.ProdutoId">Ver detalhes</a>
+                    <a class="btn btn-secondary" onclick="return confirm('Deseja realmente deletar este produto?')" asp-action="Delete" asp-route-id="@item.ProdutoId">Deletar</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
