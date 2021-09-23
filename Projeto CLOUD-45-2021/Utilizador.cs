@@ -19,10 +19,8 @@ namespace Projeto_CLOUD_45_2021.Models
        
         public string Telefone { get; set; }
         
-        public string Email { get; set; }
-
-        [Display(Name = "Data de registo")]
-        public DateTime DataRegisto { get; set; } = DateTime.UtcNow;
+        public string Email { get; set; }       
+        
         public string Password { get; set; }
         public string Morada { get; set; }
 

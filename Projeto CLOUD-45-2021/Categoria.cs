@@ -14,8 +14,7 @@ namespace Projeto_CLOUD_45_2021.Models
         public int CategoriaId { get; set; }
 
         [Display(Name = "Categoria")]
-        public string Nome { get; set; }
-        public string Tipo { get; set; }
+        public string Nome { get; set; }        
 
         public ICollection<Produto> Produtos { get; set; }
     }

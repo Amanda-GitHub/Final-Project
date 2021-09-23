@@ -29,9 +29,6 @@ namespace Api.Migrations
                     b.Property<string>("Nome")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Tipo")
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("CategoriaId");
 
                     b.ToTable("Categorias");
@@ -40,14 +37,12 @@ namespace Api.Migrations
                         new
                         {
                             CategoriaId = 1,
-                            Nome = "Plantas",
-                            Tipo = "Interior"
+                            Nome = "Planta Exterior"
                         },
                         new
                         {
                             CategoriaId = 2,
-                            Nome = "Plantas",
-                            Tipo = "Interior"
+                            Nome = "Planta Interior"
                         });
                 });
 
@@ -173,9 +168,6 @@ namespace Api.Migrations
                     b.Property<DateTime>("DataNascimento")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("DataRegisto")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
 
@@ -209,7 +201,6 @@ namespace Api.Migrations
                             CodigoPostal = "2800-000",
                             Contribuinte = 123456789,
                             DataNascimento = new DateTime(1986, 2, 7, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DataRegisto = new DateTime(2021, 9, 19, 19, 2, 23, 920, DateTimeKind.Local).AddTicks(5540),
                             Email = "amanda@gmail.com",
                             Localidade = "Lisboa",
                             Morada = "Rua da Judiaria",

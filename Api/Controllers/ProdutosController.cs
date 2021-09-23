@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using Api.Data;
 using Projeto_CLOUD_45_2021.Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Linq.Expressions;
+
 
 namespace Api.Controllers
 {
@@ -16,7 +18,7 @@ namespace Api.Controllers
     public class ProdutosController : ControllerBase
     {
         private readonly DataBaseContext _context;
-
+       
         public ProdutosController(DataBaseContext context)
         {
             _context = context;
@@ -81,7 +83,8 @@ namespace Api.Controllers
         [HttpPost]
         public async Task<ActionResult<Produto>> PostProduto(Produto produto)
         {
-            
+            var query = _context.Produtos.Include(p => p.Categoria);
+            produto = (Produto)query;
             _context.Produtos.Add(produto);
             await _context.SaveChangesAsync();
 

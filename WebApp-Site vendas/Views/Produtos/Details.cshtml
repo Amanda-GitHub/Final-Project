@@ -1,0 +1,37 @@
+﻿@model Projeto_CLOUD_45_2021.Models.Produto
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<div class="container">
+    <article class="row justify-content-center">
+        <figure class="col-md-7 mt-5">
+            <img class="img-fluid" src="~/img/produtos/plantas exterior/Cipreste limão.jpg"/>
+        </figure>
+        <section class="col-md-5 mt-5">
+            <article>
+                <h1> @Html.DisplayFor(model => model.NomeComum)</h1>
+                <p><b>Nome científico:</b> @Html.DisplayFor(model => model.NomeCientífico)</p>
+                <p style="text-align: justify"><b>Descrição:</b> @Html.DisplayFor(model => model.Descricao)</p>
+            </article>
+            <article>
+                <div>
+                    <h4>
+                        <strong>
+                            €@Html.DisplayFor(model => model.Preco)
+                            <span class="d-block"></span>
+                        </strong><br />
+                    </h4>
+                    <form asp-action="CarrinhoCompra">                        
+                        <a asp-controller="Produtos" asp-action="CarrinhoCompras" asp-route-id="@Model.ProdutoId" class="btn btn-success btn-sm">Adicionar ao carrinho</a>
+                    </form>                    
+                </div>
+            </article>
+        </section>
+    </article>
+</div>
+

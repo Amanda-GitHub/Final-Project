@@ -1,0 +1,38 @@
+﻿@model Projeto_CLOUD_45_2021.Models.Utilizador
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="flex-fill">
+    <div class="container">
+        <div class="row justify-content-center">
+            <form class="col-sm-10 col-md-8 col-lg-6" asp-action="Login">
+                <br />
+                <h2>Por favor, insira seus dados:</h2>
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group mb-3">
+                    <label asp-for="Email" class="control-label"></label>
+                    <input type="email" asp-for="Email" class="form-control" placeholder=" " autofocus />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+                <div class="form-group mb-3">
+                    <label asp-for="Password" class="control-label"></label>
+                    <input type="password" asp-for="Password" class="form-control" placeholder=" " autofocus />
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+                <div class="form-check mb-3">
+                    <input type="checkbox" class="form-check-input" id="lembrar" />
+                    <label for="lembrar" class="form-check-label">Lembrar de mim</label>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Entrar" class="btn btn-success" />
+                </div>
+                <p class="mt-3">
+                    Ainda não é registado? <a asp-action="Create">Registe-se aqui.</a>
+                </p>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,67 @@
+﻿@model IEnumerable<Projeto_CLOUD_45_2021.Models.Encomenda>
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<br />
+<div class="container">
+    <div class="row gx-3">
+        <div class="col-4">
+            <div class="list-group">
+                <a asp-controller="Utilizadores" asp-action="Edit" asp-route-id="" class="list-group-item list-group-item-action ">
+                    <i class="fas fa-user"></i> Dados Pessoais
+                </a>
+                <a asp-controller="Encomendas" asp-action="MinhasEncomendas" class="list-group-item list-group-item-action bg-success text-light">
+                    <i class="fas fa-truck"></i> Encomendas
+                </a>
+                <a asp-controller="Home" asp-action="Index" class="list-group-item list-group-item-action">
+                    <i class="fas fa-door-open"></i> Sair
+                </a>
+            </div>
+        </div>
+        <div class="col-8">
+            <h2>Minhas Encomendas: </h2>
+            <hr />
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            Encomenda nº:
+                        </th>
+                        <th>
+                            Data:
+                        </th>                       
+                        <th>
+                            Valor:
+                        </th>                       
+                        <th>
+                            Produtos:
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                               @Html.DisplayFor(modelItem => item.EncomendaId)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.DataEncomenda)
+                            </td>                            
+                            <td>
+                                € @Html.DisplayFor(modelItem => item.ValorTotal)
+                            </td>                            
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Produto.NomeComum)
+                            </td>                            
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

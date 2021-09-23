@@ -1,0 +1,47 @@
+﻿@model Projeto_CLOUD_45_2021.Models.Produto
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<br />
+<div class="container">   
+    <h4>Confira os itens e clique em <b>Encomendar</b> para finalizar sua compra.</h4>
+    <ul class="list-group mb-3">
+        <li class="list-group-item py-3">
+            <div class="list-group-item py-3">
+                <div class="row g-3">
+                    <div class="col-4 col-md-3 col-lg-2">
+                        <a href="">
+                            <img src="~/img/produtos/plantas exterior/cacto de natal.jpeg" class="img-thumbnail" />
+                        </a>
+                    </div>
+                    <div class="col-8 col-md-9 col-lg-7 col-xl-8 text-left align-self-center">
+                        <h4>
+                            <a asp-controller="Produtos" asp-action="Details" asp-route-id="" class="text-decoration-none">Item</a>
+                        </h4>
+                        <h5>
+                            <b>
+                                2 unidade(s)<br />
+                                € 00,00
+                            </b>
+                        </h5>
+                    </div>                    
+                </div>
+            </div>
+        </li>
+        <li class="list-group-item pt-3 pb-0">
+            <div class="text-right">
+                <h4 class="text-dark mb-3">
+                    Valor total: €
+                </h4>                
+                <a asp-controller="Encomendas" asp-action="ConfirmacaoEncomenda" class="btn btn-danger btn-lg mb-3">
+                    Encomendar
+                </a>
+            </div>
+        </li>
+    </ul>
+</div>
+
+

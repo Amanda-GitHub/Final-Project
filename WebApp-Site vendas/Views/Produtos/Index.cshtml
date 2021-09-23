@@ -1,0 +1,28 @@
+﻿@model IEnumerable<Projeto_CLOUD_45_2021.Models.Produto>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<br />
+<div class="container">
+    <div class="row justify-content-center">
+        @foreach (var item in Model)
+        {
+            <div class="col-sm-4 col-md-2">
+                <div class="card text-center bg-light">
+                    <img src="~/img/produtos/plantas exterior/Alfazema.jpg" class="card-img-top rounded-lg"/>
+                </div>
+                <div class="card-body text-center">
+                    <span><b>@Html.DisplayFor(modelItem => item.NomeComum)</b></span><br />
+                    <span> € @Html.DisplayFor(modelItem => item.Preco) </span>                   
+                    <a asp-controller="Produtos" asp-action="Details" asp-route-id="@item.ProdutoId" class="btn btn-success btn-sm">Ver produto</a>
+                </div>
+            </div>
+        }
+    </div>  
+</div>
+
+
