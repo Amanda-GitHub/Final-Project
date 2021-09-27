@@ -25,14 +25,15 @@ namespace Api.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Encomenda>>> GetEncomendas()
         {
-            return await _context.Encomendas.ToListAsync();
+            var encomendas = _context.Encomendas.Include(e => e.Produto).Include(e => e.Utilizador);
+            return await encomendas.ToListAsync();
         }
 
         // GET: api/Encomendas/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Encomenda>> GetEncomenda(int id)
         {
-            var encomenda = await _context.Encomendas.FindAsync(id);
+            var encomenda = await _context.Encomendas.Include(e => e.Produto).Include(e => e.Utilizador).FirstOrDefaultAsync(m => m.EncomendaId == id);
 
             if (encomenda == null)
             {

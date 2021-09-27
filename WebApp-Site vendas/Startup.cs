@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WebApp_Site_vendas.Data;
 
 namespace WebApp_Site_vendas
 {
@@ -28,6 +29,10 @@ namespace WebApp_Site_vendas
             services.AddDbContext<DataBaseContext>(options =>
                  options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
+            
+            services.AddDbContext<DataBaseCarrinhoContext>(options =>
+                 options.UseSqlServer(
+                    Configuration.GetConnectionString("DefaultConnectionDbCarrinho")));
 
             services.AddControllersWithViews();
         }

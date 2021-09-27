@@ -23,10 +23,10 @@
                     <div class="collapse navbar-collapse">
                         <ul class="navbar-nav flex-grow-1">
                             <li class="nav-item">
-                                <a class="nav-link text-white" href="https://localhost:44370/">Área administrativa</a>
+                                <a class="nav-link text-white" href="https://localhost:44370/">Área restrita</a>
                             </li>
                             <li class="nav-item">
-                                <a asp-area="" asp-controller="" asp-action="" class="nav-link text-white">Comunidade</a>
+                                <a asp-area="" asp-controller="Comunidade" asp-action="Index" class="nav-link text-white">Comunidade</a>
                             </li>
                         </ul>
                         <div class="align-self-end">
@@ -36,11 +36,6 @@
                                 </li>
                                 <li class="nav-item">
                                     <a asp-area="" asp-controller="Utilizadores" asp-action="Login" class="nav-link text-white">Login</a>
-                                </li>
-                                <li class="nav-item">
-                                    <span class="badge rounded-pill bg-light text-dark position-absolute ml-sm-3 mt-0" title="5 produto(s) no carrinho"><small>5</small></span>
-                                    <a asp-area="" asp-controller="Produtos" asp-action="CarrinhoCompras" class="nav-link text-white"></a>
-                                    <i class="fas fa-shopping-cart" style="font-size: 20px; line-height:24px;"></i>
                                 </li>
                             </ul>
                         </div>

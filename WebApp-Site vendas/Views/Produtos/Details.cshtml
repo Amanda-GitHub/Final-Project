@@ -27,7 +27,7 @@
                         </strong><br />
                     </h4>
                     <form asp-action="CarrinhoCompra">                        
-                        <a asp-controller="Produtos" asp-action="CarrinhoCompras" asp-route-id="@Model.ProdutoId" class="btn btn-success btn-sm">Adicionar ao carrinho</a>
+                        <input type="submit" value="Adicionar ao carrinho" asp-controller="Produtos" asp-action="AddCarrinho" asp-route-id="@Model.ProdutoId" class="btn btn-success btn-sm">
                     </form>                    
                 </div>
             </article>

@@ -11,10 +11,10 @@
     <div class="row gx-3">
         <div class="col-4">
             <div class="list-group">
-                <a asp-controller="Utilizadores" asp-action="Edit" class="list-group-item list-group-item-action bg-success text-light">
+                <a asp-controller="Utilizadores" asp-action="Edit" asp-route-id="@Model.UtilizadorId" class="list-group-item list-group-item-action">
                     <i class="fas fa-user"></i> Dados Pessoais
                 </a>
-                <a asp-controller="Encomendas" asp-action="MinhasEncomendas" class="list-group-item list-group-item-action">
+                <a asp-controller="Encomendas" asp-action="MinhasEncomendas" asp-route-id="@Model.UtilizadorId" class="list-group-item list-group-item-action">
                     <i class="fas fa-truck"></i> Encomendas
                 </a>
                 <a asp-controller="Home" asp-action="Index" class="list-group-item list-group-item-action">

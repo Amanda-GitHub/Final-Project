@@ -83,8 +83,7 @@ namespace Api.Controllers
         [HttpPost]
         public async Task<ActionResult<Produto>> PostProduto(Produto produto)
         {
-            var query = _context.Produtos.Include(p => p.Categoria);
-            produto = (Produto)query;
+            
             _context.Produtos.Add(produto);
             await _context.SaveChangesAsync();
 
@@ -96,7 +95,7 @@ namespace Api.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteProduto(int id)
         {
-            var produto = await _context.Produtos.Include(p => p.Categoria).FirstOrDefaultAsync(m => m.ProdutoId == id);
+            var produto = await _context.Produtos.FindAsync(id);
 
             if (produto == null)
             {

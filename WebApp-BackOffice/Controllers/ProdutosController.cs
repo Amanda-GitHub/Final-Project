@@ -18,7 +18,7 @@ namespace WebApp_BackOffice.Controllers
     {
         public IActionResult Index()
         {
-            IEnumerable<Produto> produtos = null;            
+            IEnumerable<Produto> produtos = null;
 
             using (var client = new HttpClient())
             {
@@ -41,16 +41,43 @@ namespace WebApp_BackOffice.Controllers
                     produtos = Enumerable.Empty<Produto>();
                     ModelState.AddModelError(string.Empty, "Erro no servidor. Contacte o Suporte.");
                 }
-            }           
-            
+            }
+
 
             return View(produtos);
         }
 
         [HttpGet]
         public ActionResult Create()
-        {            
-            return View();
+        {
+            IEnumerable<Categoria> categorias = null;
+
+
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri("https://localhost:44365/api/Categorias");
+
+                var responseTask = client.GetAsync("Categorias");
+                responseTask.Wait();
+                var result = responseTask.Result;
+
+                if (result.IsSuccessStatusCode)
+                {
+                    var readTask = result.Content.ReadAsStringAsync();
+                    readTask.Wait();
+
+                    categorias = JsonConvert.DeserializeObject<IList<Categoria>>(readTask.Result);
+
+                }
+                else
+                {
+                    categorias = Enumerable.Empty<Categoria>();
+                    ModelState.AddModelError(string.Empty, "Erro no servidor. Contacte o Suporte.");
+                }
+
+                ViewData["CategoriaId"] = new SelectList(categorias, "CategoriaId", "Nome");
+                return View();
+            }
         }
 
         [HttpPost]
@@ -60,27 +87,27 @@ namespace WebApp_BackOffice.Controllers
             {
                 return BadRequest();
             }
-                
+
 
             using (var client = new HttpClient())
             {
-                client.BaseAddress = new Uri("https://localhost:44365/api/Produtos");                
-                
+                client.BaseAddress = new Uri("https://localhost:44365/api/Produtos");
+
                 //HTTP POST
                 var postTask = client.PostAsJsonAsync<Produto>("produtos", produtos);
                 postTask.Wait();
                 var result = postTask.Result;
-                
+
 
                 if (result.IsSuccessStatusCode)
                 {
                     return RedirectToAction("Index");
                 }
 
-            }            
+            }
 
             ModelState.AddModelError(string.Empty, "Erro no servidor. Contacte o Suporte.");
-                       
+
 
             return View(produtos);
         }
@@ -92,6 +119,35 @@ namespace WebApp_BackOffice.Controllers
             {
                 return BadRequest();
             }
+
+            IEnumerable<Categoria> categorias = null;
+
+
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri("https://localhost:44365/api/Categorias");
+
+                var responseTask = client.GetAsync("Categorias");
+                responseTask.Wait();
+                var result = responseTask.Result;
+
+                if (result.IsSuccessStatusCode)
+                {
+                    var readTask = result.Content.ReadAsStringAsync();
+                    readTask.Wait();
+
+                    categorias = JsonConvert.DeserializeObject<IList<Categoria>>(readTask.Result);
+
+                }
+                else
+                {
+                    categorias = Enumerable.Empty<Categoria>();
+                    ModelState.AddModelError(string.Empty, "Erro no servidor. Contacte o Suporte.");
+                }
+
+                ViewData["CategoriaId"] = new SelectList(categorias, "CategoriaId", "Nome");
+            }
+
 
             Produto produto = null;
 
@@ -112,11 +168,12 @@ namespace WebApp_BackOffice.Controllers
                     produto = JsonConvert.DeserializeObject<Produto>(readTask.Result);
 
                 }
-
                 
+                ViewData["Categoria"] = new SelectList(categorias, "Nome", "Nome", produto.Categoria);
                 return View(produto);
             }
         }
+
 
         [HttpPost]
         public ActionResult Edit(int id, Produto produto)

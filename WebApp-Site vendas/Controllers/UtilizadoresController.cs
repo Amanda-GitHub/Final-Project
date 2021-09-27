@@ -11,6 +11,7 @@ using System.Net.Http;
 using System.Net.Http.Json;
 using Newtonsoft.Json;
 
+
 namespace WebApp_Site_vendas.Controllers
 {
     public class UtilizadoresController : Controller
@@ -20,11 +21,6 @@ namespace WebApp_Site_vendas.Controllers
         public UtilizadoresController(DataBaseContext context)
         {
             _context = context;
-        }
-
-        public IActionResult MinhaConta(int? id)
-        {
-            return View();
         }
 
         public ActionResult Create()
@@ -39,59 +35,42 @@ namespace WebApp_Site_vendas.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("UtilizadorId,Nome,Contribuinte,DataNascimento,Telefone,Email,DataRegisto,Password,Morada,Numero,Andar,Localidade,CodigoPostal")] Utilizador utilizador)
         {
-            if (utilizador == null)
+            if (ModelState.IsValid)
             {
-                return BadRequest();
-            }
+                var check = _context.Utilizadores.FirstOrDefault(e => e.Email == utilizador.Email);
 
-            using (var client = new HttpClient())
-            {
-                client.BaseAddress = new Uri("https://localhost:44365/api/Utilizadores");
-                //HTTP POST
-                var postTask = client.PostAsJsonAsync<Utilizador>("utilizadores", utilizador);
-                postTask.Wait();
-                var result = postTask.Result;
-
-                if (result.IsSuccessStatusCode)
+                if (check == null)
                 {
-                    return View("MinhaConta");
+                    _context.Add(utilizador);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction("MinhaConta");
+                }
+                else
+                {                    
+                    return View(); //Tratar Erro
                 }
             }
 
-            ModelState.AddModelError(string.Empty, "Erro no servidor.Contacte o Suporte.");
-
             return View(utilizador);
         }
+            
 
         // GET: Utilizadores/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
             {
-                return BadRequest();
+                return NotFound();
             }
 
-            Utilizador utilizador = null;
+            var utilizador = await _context.Utilizadores.FindAsync(id);
 
-            using (var client = new HttpClient())
+            if (utilizador == null)
             {
-                client.BaseAddress = new Uri("https://localhost:44365/api/");
-
-                //HTTP GET
-                var responseTask = client.GetAsync("utilizadores/" + id.ToString());
-                responseTask.Wait();
-                var result = responseTask.Result;
-
-                if (result.IsSuccessStatusCode)
-                {
-                    var readTask = result.Content.ReadAsStringAsync();
-                    readTask.Wait();
-
-                    utilizador = JsonConvert.DeserializeObject<Utilizador>(readTask.Result);
-
-                }
-                return View(utilizador);
+                return NotFound();
             }
+
+            return View(utilizador);
         }
 
         // POST: Utilizadores/Edit/5
@@ -101,34 +80,69 @@ namespace WebApp_Site_vendas.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("UtilizadorId,Nome,Contribuinte,DataNascimento,Telefone,Email,DataRegisto,Password,Morada,Numero,Andar,Localidade,CodigoPostal")] Utilizador utilizador)
         {
-            if (utilizador == null)
+            if (id != utilizador.UtilizadorId)
             {
-                return BadRequest();
+                return NotFound();
             }
 
-            using (var client = new HttpClient())
+            if (ModelState.IsValid)
             {
-                client.BaseAddress = new Uri("https://localhost:44365/api/");
-
-                //HTTP PUT
-                var putTask = client.PutAsJsonAsync<Utilizador>("utilizadores/" + id.ToString(), utilizador);
-                putTask.Wait();
-                var result = putTask.Result;
-
-                if (result.IsSuccessStatusCode)
+                try
                 {
-                    return View("MinhaContaAlterada");
+                    _context.Update(utilizador);
+                    await _context.SaveChangesAsync();
                 }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!UtilizadorExists(utilizador.UtilizadorId))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                    
+                }
+
+                return RedirectToAction(nameof(Index));
             }
 
             return View(utilizador);
         }      
-
-        
+                
 
         public async Task<IActionResult> Login()
-        { 
+        {
             return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Login(string email)
+        {
+            var utilizador = _context.Utilizadores.Where(e => e.Email == email).FirstOrDefault();
+
+            if (utilizador == null)
+            {
+                return View(); //Tratar Erro
+            }
+            else
+            {
+                return View("MinhaConta", utilizador);
+
+            }
+        }
+
+        public IActionResult MinhaConta(Utilizador utilizador)
+        {
+           
+            return View();
+        }
+
+
+        private bool UtilizadorExists(int id)
+        {
+            return _context.Utilizadores.Any(e => e.UtilizadorId == id);
         }
 
     }

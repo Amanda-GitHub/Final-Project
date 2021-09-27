@@ -104,34 +104,7 @@ namespace Api.Controllers
         {
             return _context.Utilizadores.Any(e => e.UtilizadorId == id);
         }
-
-        //[HttpGet("{nome:string}/nome")]
-        //public async Task<IActionResult> GetUtilizadorPorNome(string nome)
-        //{
-        //    if (nome == null)
-        //    {
-        //        return BadRequest("Nome inválido!");
-        //    }
-
-        //    var pesquisa = _context.Utilizadores.ToList()
-        //        .Where(s => s.Nome.Contains(nome))
-        //        .Select(s => new Utilizador()
-        //        {
-        //            UtilizadorId = s.UtilizadorId,
-        //            Nome = s.Nome,
-        //            Contribuinte = s.Contribuinte,
-        //            Email = s.Email
-
-        //        }).ToList();
-
-        //    if (pesquisa == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    return Ok(pesquisa);
-
-        //}
+        
     }
 
 }

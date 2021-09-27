@@ -197,36 +197,7 @@ namespace WebApp_BackOffice.Controllers
             return View(utilizador);
 
         }
-
-        //public IActionResult Search(string nome)
-        //{
-        //    IEnumerable<Utilizador> utilizadores = null;
-        //    using (var client = new HttpClient())
-        //    {
-        //        client.BaseAddress = new Uri("https://localhost:44365/api/");
-
-        //        //HTTP GET
-        //        var responseTask = client.GetAsync("utilizadores?nome=" + nome);
-        //        responseTask.Wait();
-        //        var result = responseTask.Result;
-                
-        //        if (result.IsSuccessStatusCode)
-        //        {
-        //            var readTask = result.Content.ReadAsStringAsync();
-        //            readTask.Wait();
-
-        //            utilizadores = JsonConvert.DeserializeObject<IList<Utilizador>>(readTask.Result);
-        //        }
-        //        else
-        //        {
-        //            utilizadores = Enumerable.Empty<Utilizador>();
-        //            ModelState.AddModelError(string.Empty, "Erro no servidor. Contacte o Suporte.");
-        //        }
-
-        //    }
-        //    return View(utilizadores);
-        //}
-
+        
 
     }
 }

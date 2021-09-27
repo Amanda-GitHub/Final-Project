@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using Projeto_CLOUD_45_2021.Models;
 using System;
@@ -47,6 +48,61 @@ namespace WebApp_BackOffice.Controllers
         [HttpGet]
         public ActionResult Create()
         {
+            IEnumerable<Utilizador> utilizadores = null;
+
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri("https://localhost:44365/api/Utilizadores");
+
+                var responseTask = client.GetAsync("Utilizadores");
+                responseTask.Wait();
+                var result = responseTask.Result;
+
+                if (result.IsSuccessStatusCode)
+                {
+                    var readTask = result.Content.ReadAsStringAsync();
+                    readTask.Wait();
+
+                    utilizadores = JsonConvert.DeserializeObject<IList<Utilizador>>(readTask.Result);
+
+                }
+                else
+                {
+                    utilizadores = Enumerable.Empty<Utilizador>();
+                    ModelState.AddModelError(string.Empty, "Erro no servidor. Contacte o Suporte.");
+                }
+
+                ViewData["UtilizadorId"] = new SelectList(utilizadores, "UtilizadorId", "Nome");
+                
+            }
+
+            IEnumerable<Produto> produtos = null;
+
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri("https://localhost:44365/api/Produtos");
+
+                var responseTask = client.GetAsync("Produtos");
+                responseTask.Wait();
+                var result = responseTask.Result;
+
+                if (result.IsSuccessStatusCode)
+                {
+                    var readTask = result.Content.ReadAsStringAsync();
+                    readTask.Wait();
+
+                    produtos = JsonConvert.DeserializeObject<IList<Produto>>(readTask.Result);
+
+                }
+                else
+                {
+                    produtos = Enumerable.Empty<Produto>();
+                    ModelState.AddModelError(string.Empty, "Erro no servidor. Contacte o Suporte.");
+                }
+
+                ViewData["ProdutoId"] = new SelectList(produtos, "ProdutoId", "Nome");
+
+            }
             return View();
         }
 
@@ -85,6 +141,62 @@ namespace WebApp_BackOffice.Controllers
             if (id == null)
             {
                 return BadRequest();
+            }
+
+            IEnumerable<Utilizador> utilizadores = null;
+
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri("https://localhost:44365/api/Utilizadores");
+
+                var responseTask = client.GetAsync("Utilizadores");
+                responseTask.Wait();
+                var result = responseTask.Result;
+
+                if (result.IsSuccessStatusCode)
+                {
+                    var readTask = result.Content.ReadAsStringAsync();
+                    readTask.Wait();
+
+                    utilizadores = JsonConvert.DeserializeObject<IList<Utilizador>>(readTask.Result);
+
+                }
+                else
+                {
+                    utilizadores = Enumerable.Empty<Utilizador>();
+                    ModelState.AddModelError(string.Empty, "Erro no servidor. Contacte o Suporte.");
+                }
+
+                ViewData["UtilizadorId"] = new SelectList(utilizadores, "UtilizadorId", "Nome");
+
+            }
+
+            IEnumerable<Produto> produtos = null;
+
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri("https://localhost:44365/api/Produtos");
+
+                var responseTask = client.GetAsync("Produtos");
+                responseTask.Wait();
+                var result = responseTask.Result;
+
+                if (result.IsSuccessStatusCode)
+                {
+                    var readTask = result.Content.ReadAsStringAsync();
+                    readTask.Wait();
+
+                    produtos = JsonConvert.DeserializeObject<IList<Produto>>(readTask.Result);
+
+                }
+                else
+                {
+                    produtos = Enumerable.Empty<Produto>();
+                    ModelState.AddModelError(string.Empty, "Erro no servidor. Contacte o Suporte.");
+                }
+
+                ViewData["ProdutoId"] = new SelectList(produtos, "ProdutoId", "Nome");
+
             }
 
             Encomenda encomenda = null;
