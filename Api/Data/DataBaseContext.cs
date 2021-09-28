@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Projeto_CLOUD_45_2021.Models;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Api.Data
 {
-    public class DataBaseContext: DbContext
+    public class DataBaseContext: IdentityDbContext
     {
         public DataBaseContext(DbContextOptions<DataBaseContext> options)
             : base(options)
@@ -23,6 +24,8 @@ namespace Api.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
             modelBuilder.Entity<Utilizador>().HasData(
                 new Utilizador() { UtilizadorId = 1, Nome = "Amanda Nunes", Contribuinte = 123456789, DataNascimento = new DateTime(1986, 2, 7), Telefone = "212212212", Email = "amanda@gmail.com",  Password = "123@123", Morada = "Rua da Judiaria", Numero = 21, Andar = "2º esq", Localidade = "Lisboa", CodigoPostal = "2800-000"});
 

@@ -10,27 +10,33 @@ using Projeto_CLOUD_45_2021.Models;
 using System.Net.Http;
 using System.Net.Http.Json;
 using Newtonsoft.Json;
-
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication;
 
 namespace WebApp_Site_vendas.Controllers
 {
     public class UtilizadoresController : Controller
     {
         private readonly DataBaseContext _context;
+        private readonly UserManager<IdentityUser> userManager;
+        private readonly SignInManager<IdentityUser> signInManager;
 
-        public UtilizadoresController(DataBaseContext context)
+        public UtilizadoresController(DataBaseContext context, UserManager<IdentityUser> userManager,
+            SignInManager<IdentityUser> signInManager)
         {
             _context = context;
+            this.userManager = userManager;
+            this.signInManager = signInManager;
         }
 
+       
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: Utilizadores/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("UtilizadorId,Nome,Contribuinte,DataNascimento,Telefone,Email,DataRegisto,Password,Morada,Numero,Andar,Localidade,CodigoPostal")] Utilizador utilizador)
@@ -43,19 +49,37 @@ namespace WebApp_Site_vendas.Controllers
                 {
                     _context.Add(utilizador);
                     await _context.SaveChangesAsync();
-                    return RedirectToAction("MinhaConta");
+
+                    var userIdentity = new IdentityUser
+                    {
+                        UserName = utilizador.Email,
+                        Email = utilizador.Email
+                    };
+                    var result = await userManager.CreateAsync(userIdentity, utilizador.Password);                    
+
+                    if (result.Succeeded)
+                    {
+                        await signInManager.SignInAsync(userIdentity, isPersistent: false);
+                        return RedirectToAction("MinhaConta", utilizador);
+                    }
+                    else
+                    {
+                        ModelState.AddModelError(string.Empty, "Dados inválidos!");
+                    }
                 }
+
                 else
-                {                    
-                    return View(); //Tratar Erro
+                {
+                    ModelState.AddModelError(string.Empty, "Dados inválidos!");
                 }
             }
 
             return View(utilizador);
         }
-            
 
-        // GET: Utilizadores/Edit/5
+
+        
+        [Authorize]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -73,9 +97,7 @@ namespace WebApp_Site_vendas.Controllers
             return View(utilizador);
         }
 
-        // POST: Utilizadores/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("UtilizadorId,Nome,Contribuinte,DataNascimento,Telefone,Email,DataRegisto,Password,Morada,Numero,Andar,Localidade,CodigoPostal")] Utilizador utilizador)
@@ -105,41 +127,52 @@ namespace WebApp_Site_vendas.Controllers
                     
                 }
 
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("MinhaConta", utilizador);
             }
 
             return View(utilizador);
-        }      
-                
+        }
 
+        [HttpGet]
         public async Task<IActionResult> Login()
         {
+
             return View();
+                    
         }
 
         [HttpPost]
-        public async Task<IActionResult> Login(string email)
+        public async Task<IActionResult> Login(Utilizador utilizador)
         {
-            var utilizador = _context.Utilizadores.Where(e => e.Email == email).FirstOrDefault();
-
-            if (utilizador == null)
+            if (ModelState.IsValid)
             {
-                return View(); //Tratar Erro
+                var result = await signInManager.PasswordSignInAsync(
+                    utilizador.Email, utilizador.Password, false, false);
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("MinhaConta", utilizador);
+                }
+                ModelState.AddModelError(string.Empty, "Login Inválido");
             }
-            else
-            {
-                return View("MinhaConta", utilizador);
-
-            }
+            return View(utilizador);
         }
 
+        public async Task<IActionResult> Logout()
+        {
+            await signInManager.SignOutAsync();
+            return RedirectToAction("index", "home");
+        }
+
+        
+        [Authorize]
         public IActionResult MinhaConta(Utilizador utilizador)
         {
-           
-            return View();
+            var user = _context.Utilizadores.FirstOrDefault(e => e.Email == User.Identity.Name);
+
+            return View(user);
         }
 
-
+       
         private bool UtilizadorExists(int id)
         {
             return _context.Utilizadores.Any(e => e.UtilizadorId == id);

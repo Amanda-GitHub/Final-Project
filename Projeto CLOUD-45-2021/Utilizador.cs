@@ -9,7 +9,7 @@ namespace Projeto_CLOUD_45_2021.Models
     {
         [Key]
         public int UtilizadorId { get; set; }
-        
+
         public string Nome { get; set; }        
         
         public int Contribuinte { get; set; }
@@ -18,9 +18,14 @@ namespace Projeto_CLOUD_45_2021.Models
         public DateTime DataNascimento { get; set; }        
        
         public string Telefone { get; set; }
-        
-        public string Email { get; set; }       
-        
+
+        [Required]
+        [EmailAddress]
+        [RegularExpression(@"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$", ErrorMessage = "Email com formato inválido")]
+        public string Email { get; set; }
+
+        [Required]
+        [DataType(DataType.Password)]
         public string Password { get; set; }
         public string Morada { get; set; }
 

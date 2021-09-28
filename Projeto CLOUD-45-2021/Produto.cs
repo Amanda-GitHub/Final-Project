@@ -23,7 +23,7 @@ namespace Projeto_CLOUD_45_2021.Models
         public string Descricao { get; set; }
         
         [Display(Name = "Preço")]
-        public float Preco { get; set; }
+        public decimal Preco { get; set; }
         public string Foto { get; set; } //Url blob storage
 
         [ForeignKey("Categoria")]

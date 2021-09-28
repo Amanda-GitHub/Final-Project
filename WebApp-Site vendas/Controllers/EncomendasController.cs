@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Api.Data;
 using Projeto_CLOUD_45_2021.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebApp_Site_vendas.Controllers
 {
@@ -19,7 +20,7 @@ namespace WebApp_Site_vendas.Controllers
             _context = context;
         }
 
-         
+         [Authorize]
         public async Task<IActionResult> MinhasEncomendas(int? id)
         {
             if (id == null)
@@ -32,7 +33,7 @@ namespace WebApp_Site_vendas.Controllers
         }
 
 
-        // GET: Encomendas/Details/5
+       
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -52,7 +53,7 @@ namespace WebApp_Site_vendas.Controllers
             return View(encomenda);
         }
 
-        // GET: Encomendas/Create
+        [Authorize]
         public IActionResult Create()
         {
             ViewData["ProdutoId"] = new SelectList(_context.Produtos, "ProdutoId", "ProdutoId");
@@ -60,9 +61,7 @@ namespace WebApp_Site_vendas.Controllers
             return View();
         }
 
-        // POST: Encomendas/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("EncomendaId,DataEncomenda,Quantidade,ValorTotal,UtilizadorId,ProdutoId")] Encomenda encomenda)
@@ -78,64 +77,10 @@ namespace WebApp_Site_vendas.Controllers
             return View(encomenda);
         }
 
-        // GET: Encomendas/Edit/5
-        //public async Task<IActionResult> Edit(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return NotFound();
-        //    }
 
-        //    var encomenda = await _context.Encomendas.FindAsync(id);
-        //    if (encomenda == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    ViewData["ProdutoId"] = new SelectList(_context.Produtos, "ProdutoId", "ProdutoId", encomenda.ProdutoId);
-        //    ViewData["UtilizadorId"] = new SelectList(_context.Utilizadores, "UtilizadorId", "UtilizadorId", encomenda.UtilizadorId);
-        //    return View(encomenda);
-        //}
 
-        //// POST: Encomendas/Edit/5
-        //// To protect from overposting attacks, enable the specific properties you want to bind to.
-        //// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Edit(int id, [Bind("EncomendaId,DataEncomenda,Quantidade,ValorTotal,UtilizadorId,ProdutoId")] Encomenda encomenda)
-        //{
-        //    if (id != encomenda.EncomendaId)
-        //    {
-        //        return NotFound();
-        //    }
+       
+        
 
-        //    if (ModelState.IsValid)
-        //    {
-        //        try
-        //        {
-        //            _context.Update(encomenda);
-        //            await _context.SaveChangesAsync();
-        //        }
-        //        catch (DbUpdateConcurrencyException)
-        //        {
-        //            if (!EncomendaExists(encomenda.EncomendaId))
-        //            {
-        //                return NotFound();
-        //            }
-        //            else
-        //            {
-        //                throw;
-        //            }
-        //        }
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    ViewData["ProdutoId"] = new SelectList(_context.Produtos, "ProdutoId", "ProdutoId", encomenda.ProdutoId);
-        //    ViewData["UtilizadorId"] = new SelectList(_context.Utilizadores, "UtilizadorId", "UtilizadorId", encomenda.UtilizadorId);
-        //    return View(encomenda);
-        //}
-
-        //private bool EncomendaExists(int id)
-        //{
-        //    return _context.Encomendas.Any(e => e.EncomendaId == id);
-        //}
     }
 }
