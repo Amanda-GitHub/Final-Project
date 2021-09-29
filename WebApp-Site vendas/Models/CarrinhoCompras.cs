@@ -12,10 +12,12 @@ namespace WebApp_Site_vendas.Models
        [Key]
         public Guid CarrinhoId { get; set; }
         public int ProdutoId { get; set; }
+        public int ClienteId { get; set; }
         public string Nome { get; set; }
+        public string Foto { get; set; }
         public int Quantidade { get; set; }
-        public float ValorTotal { get; set; }
-        public float PrecoUnit { get; set; }
+        public decimal ValorTotal { get; set; }
+        public decimal PrecoUnit { get; set; }
 
     }
     

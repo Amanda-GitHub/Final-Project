@@ -13,7 +13,7 @@
         {
             <div class="col-sm-6 col-md-3">
                 <div class="card text-center bg-light">
-                    <img src="~/img/produtos/plantas exterior/Alfazema.jpg" class="card-img-top rounded-lg"/>
+                    <img src=@Html.DisplayFor(modelItem => item.Foto) class="card-img-top rounded-lg"/>
                 </div>
                 <div class="card-body text-center">
                     <span><b>@Html.DisplayFor(modelItem => item.NomeComum)</b></span><br />

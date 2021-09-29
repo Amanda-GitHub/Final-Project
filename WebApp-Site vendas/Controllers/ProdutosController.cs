@@ -13,6 +13,10 @@ using WebApp_Site_vendas.Data;
 using System.Collections;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Azure.Storage.Queues;
+using Azure.Storage.Queues.Models;
+using Microsoft.IdentityModel.Protocols;
+using System.Configuration;
 
 namespace WebApp_Site_vendas.Controllers
 {
@@ -59,64 +63,65 @@ namespace WebApp_Site_vendas.Controllers
             return View(produto);
         }
 
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> AddCarrinho(int? id)
         {
             var itens = _context.Produtos.Include(c => c.Categoria).FirstOrDefault(m => m.ProdutoId == id);
+            var utilizador = _context.Utilizadores.FirstOrDefault(e => e.Email == User.Identity.Name);
 
-            
             CarrinhoCompras cart = new CarrinhoCompras();           
             cart.CarrinhoId = Guid.NewGuid();
             cart.ProdutoId = itens.ProdutoId;
+            cart.ClienteId = utilizador.UtilizadorId;
+            cart.Foto = itens.Foto;
             cart.Quantidade = 1;
-            cart.ValorTotal = 1;
-            cart.PrecoUnit = 1;
+            cart.ValorTotal = itens.Preco;
+            cart.PrecoUnit = itens.Preco;
             cart.Nome = itens.NomeComum;
 
             _carrinhocontext.Add(cart);
             _carrinhocontext.SaveChanges();
 
 
-            return View(_carrinhocontext.Carrinho.ToList());
+            var itensUtilizador = _carrinhocontext.Carrinho.Where(c => c.ClienteId == utilizador.UtilizadorId);
+
+            ViewBag.CarrinhoTotal = itensUtilizador.Sum(s => s.PrecoUnit).ToString();
+
+            return View(itensUtilizador.ToList());
 
         }
 
         [Authorize]
         [HttpPost]
-        public async Task<IActionResult> AddCarrinho2(int? id)
+        public async Task<IActionResult> Encomendar()
         {
-           
-            var produtos = _context.Produtos.Include(c => c.Categoria).FirstOrDefault(p => p.ProdutoId == id);
-
-
             var utilizador = _context.Utilizadores.FirstOrDefault(e => e.Email == User.Identity.Name);
+
+            var carrinho = _carrinhocontext.Carrinho.Where(c => c.ClienteId == utilizador.UtilizadorId).FirstOrDefault();
+
 
             Encomenda novaEnc = new Encomenda();
             novaEnc.DataEncomenda = DateTime.Now;
-            novaEnc.ProdutoId = produtos.ProdutoId;
-            novaEnc.Quantidade = 1;
-            novaEnc.ValorTotal = 1;
-            novaEnc.UtilizadorId = utilizador.UtilizadorId;
+            novaEnc.ProdutoId = carrinho.ProdutoId;
+            novaEnc.Quantidade = carrinho.Quantidade;
+            novaEnc.ValorTotal = carrinho.ValorTotal;
+            novaEnc.UtilizadorId = carrinho.ClienteId;
 
             _context.Add(novaEnc);
             _context.SaveChanges();
 
-
-            return View(_context.Encomendas.ToList());
-        }
-
-
-
-        [HttpPost]
-        public async Task<IActionResult> FechamentoCompra(Guid id)
-        {
-            var cart = _carrinhocontext.Carrinho.FirstOrDefault(c => c.CarrinhoId == id);
-
-            var produto = _context.Produtos.Include(c => c.Categoria).Where(p => p.ProdutoId.Equals(cart.ProdutoId));
             
-            return View("CarrinhoCompras", await produto.ToListAsync());
+            ////envio da Queue na concusão da encomenda 
+            ///
+            //QueueClient queueClient = new QueueClient("DefaultEndpointsProtocol=https;AccountName=asprojeto;AccountKey=a0B+PPewtIG4+ngBo/4uXdEnNq/RGCvVESJat3kcNOdmYTydATc8ik9Y7oumfAJOEJXvfyF5lP3zjOGROOPguA==;EndpointSuffix=core.windows.net", "amandaqueue");
+            //string mensagem = novaEnc.EncomendaId.ToString();
+            //string mensagem1 = novaEnc.Utilizador.Nome;
+
+            //queueClient.SendMessage("Encomenda nº: " + mensagem + " - Cliente: " + mensagem1);
+
+            return RedirectToAction("ConfirmacaoEncomenda", "Encomendas", novaEnc);
         }
 
-        
     }
 }

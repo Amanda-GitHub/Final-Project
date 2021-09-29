@@ -9,6 +9,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
+using Azure.Storage.Blobs;
 
 
 namespace WebApp_BackOffice.Controllers
@@ -168,7 +169,7 @@ namespace WebApp_BackOffice.Controllers
                     produto = JsonConvert.DeserializeObject<Produto>(readTask.Result);
 
                 }
-                
+
                 ViewData["Categoria"] = new SelectList(categorias, "Nome", "Nome", produto.Categoria);
                 return View(produto);
             }
@@ -259,7 +260,7 @@ namespace WebApp_BackOffice.Controllers
             return View(produto);
         }
 
-
+       
 
 
     }

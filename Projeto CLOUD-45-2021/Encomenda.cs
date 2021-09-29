@@ -19,7 +19,7 @@ namespace Projeto_CLOUD_45_2021.Models
         public int Quantidade { get; set; }
 
         [Display(Name = "Valor Total")]
-        public float ValorTotal { get; set; }
+        public decimal ValorTotal { get; set; }
 
         [ForeignKey("Utilizador")]
         public int UtilizadorId { get; set; }

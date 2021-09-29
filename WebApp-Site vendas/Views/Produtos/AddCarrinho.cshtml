@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Projeto_CLOUD_45_2021.Models.Encomenda>
+﻿@model IEnumerable<WebApp_Site_vendas.Models.CarrinhoCompras>
 @{
     ViewData["Title"] = "Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -18,12 +18,12 @@
                     <div class="row g-3">
                         <div class="col-4 col-md-3 col-lg-2">
                             <a href="">
-                                <img src="~/img/produtos/plantas exterior/cacto de natal.jpeg" class="img-thumbnail" />
+                                <img src=@Html.DisplayFor(modelItem => item.Foto) class="img-thumbnail" />
                             </a>
                         </div>
                         <div class="col-8 col-md-9 col-lg-7 col-xl-8 text-left align-self-center">
                             <h4>
-                                <a asp-controller="Produtos" asp-action="Details" asp-route-id="@item.ProdutoId" class="text-decoration-none">@Html.DisplayFor(modelItem => item.Produto.NomeComum)</a>
+                                <a asp-controller="Produtos" asp-action="Details" asp-route-id="@item.ProdutoId" class="text-decoration-none">@Html.DisplayFor(modelItem => item.Nome)</a>
                             </h4>
                         </div>
                         <div class="col-6 offset-6 col-sm-6 offset-sm-6 col-md-4 offset-md-8 col-lg-3 offset-lg-0 col-xl-2 align-self-center mt-3">
@@ -40,7 +40,7 @@
                                 </button>
                             </div>
                             <div class="text-right mt-2">
-                                <small class="text-secondary">Valor unitário: € @Html.DisplayFor(modelItem => item.Produto.Preco)</small>
+                                <small class="text-secondary">Valor unitário: € @Html.DisplayFor(modelItem => item.PrecoUnit)</small>
                             </div>
                         </div>
                     </div>
@@ -53,14 +53,14 @@
     <div class="list-group-item pt-3 pb-0">
         <div class="text-right">
             <h4 class="text-dark mb-3">
-                Valor total: €
+                Valor total: € @ViewBag.CarrinhoTotal
             </h4>
             <a asp-controller="Home" asp-action="Index" asp-route-id="" class="btn btn-success btn-lg mb-3 mr-3">
                 Continuar a comprar
             </a>
-            <a asp-controller="Produtos" asp-action="FechamentoCompra" asp-route-id="" class="btn btn-success btn-lg mb-3">
-                Encomendar
-            </a>
+            <form action="Encomendar" method="post">
+                <input type="submit" value="Encomendar" asp-controller="Produtos" asp-action="Encomendar" class="btn btn-success btn-lg mb-3">
+            </form>
         </div>
     </div>
 </div>

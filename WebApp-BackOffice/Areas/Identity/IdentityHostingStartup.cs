@@ -20,7 +20,7 @@ namespace WebApp_BackOffice.Areas.Identity
                     options.UseSqlServer(
                         context.Configuration.GetConnectionString("BackOfficeDbContextConnection")));
 
-                services.AddDefaultIdentity<BackOfficeUser>(options => options.SignIn.RequireConfirmedAccount = true)
+                services.AddDefaultIdentity<BackOfficeUser>(options => options.SignIn.RequireConfirmedAccount = false)
                     .AddEntityFrameworkStores<BackOfficeDbContext>();
             });
         }

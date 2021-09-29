@@ -70,7 +70,7 @@ namespace WebApp_Site_vendas.Controllers
 
                 else
                 {
-                    ModelState.AddModelError(string.Empty, "Dados inválidos!");
+                    ModelState.AddModelError(string.Empty, "Email já registado, por favor registe um novo email!");
                 }
             }
 
@@ -80,14 +80,12 @@ namespace WebApp_Site_vendas.Controllers
 
         
         [Authorize]
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit()
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            var user = _context.Utilizadores.FirstOrDefault(e => e.Email == User.Identity.Name);
+            var userId = user.UtilizadorId;
 
-            var utilizador = await _context.Utilizadores.FindAsync(id);
+            var utilizador = await _context.Utilizadores.FindAsync(userId);
 
             if (utilizador == null)
             {

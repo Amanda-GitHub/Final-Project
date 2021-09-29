@@ -21,66 +21,20 @@ namespace WebApp_Site_vendas.Controllers
         }
 
          [Authorize]
-        public async Task<IActionResult> MinhasEncomendas(int? id)
+        public async Task<IActionResult> MinhasEncomendas()
         {
-            if (id == null)
-            {
-                return NotFound();
-            }           
-            
-            var dataBaseContext = _context.Encomendas.Include(e => e.Produto).Include(e => e.Utilizador).Where(c => c.UtilizadorId == id);
+            var utilizador = _context.Utilizadores.FirstOrDefault(e => e.Email == User.Identity.Name);
+            var dataBaseContext = _context.Encomendas.Include(e => e.Produto).Include(e => e.Utilizador).Where(c => c.UtilizadorId == utilizador.UtilizadorId);
             return View(await dataBaseContext.ToListAsync());
         }
 
 
-       
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var encomenda = await _context.Encomendas
-                .Include(e => e.Produto)
-                .Include(e => e.Utilizador)
-                .FirstOrDefaultAsync(m => m.EncomendaId == id);
-            if (encomenda == null)
-            {
-                return NotFound();
-            }
-
-            return View(encomenda);
-        }
-
         [Authorize]
-        public IActionResult Create()
+        public async Task<IActionResult> ConfirmacaoEncomenda()
         {
-            ViewData["ProdutoId"] = new SelectList(_context.Produtos, "ProdutoId", "ProdutoId");
-            ViewData["UtilizadorId"] = new SelectList(_context.Utilizadores, "UtilizadorId", "UtilizadorId");
             return View();
         }
 
-        [Authorize]
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("EncomendaId,DataEncomenda,Quantidade,ValorTotal,UtilizadorId,ProdutoId")] Encomenda encomenda)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.Add(encomenda);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["ProdutoId"] = new SelectList(_context.Produtos, "ProdutoId", "ProdutoId", encomenda.ProdutoId);
-            ViewData["UtilizadorId"] = new SelectList(_context.Utilizadores, "UtilizadorId", "UtilizadorId", encomenda.UtilizadorId);
-            return View(encomenda);
-        }
-
-
-
        
-        
-
     }
 }

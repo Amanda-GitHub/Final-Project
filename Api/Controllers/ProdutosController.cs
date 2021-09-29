@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Linq.Expressions;
 
 
+
 namespace Api.Controllers
 {
     [Route("api/[controller]")]
@@ -112,5 +113,6 @@ namespace Api.Controllers
         {
             return _context.Produtos.Any(e => e.ProdutoId == id);
         }
+
     }
 }

@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Azure.Storage.Blobs;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -15,73 +17,56 @@ namespace WebApp_Site_vendas.Controllers
             return View();
         }
 
-        // GET: ComunidadeController/Details/5
-        public ActionResult Details(int id)
+        public ActionResult Desafio(string nome)
         {
-            return View();
+            string nomeplanta = "verbena";
+
+            if (nome == nomeplanta)
+            {
+                return View("Acertou");
+            }
+            else
+            {
+                return View("Errou");
+            }
+           
         }
 
-        // GET: ComunidadeController/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
 
-        // POST: ComunidadeController/Create
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public ActionResult Upload(IFormFile file)
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
+            BlobServiceClient blobServiceClient = new BlobServiceClient("DefaultEndpointsProtocol=https;AccountName=asprojeto;AccountKey=a0B+PPewtIG4+ngBo/4uXdEnNq/RGCvVESJat3kcNOdmYTydATc8ik9Y7oumfAJOEJXvfyF5lP3zjOGROOPguA==;EndpointSuffix=core.windows.net");
 
-        // GET: ComunidadeController/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
+            string containername = "amandaimages";
 
-        // POST: ComunidadeController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
+            var blobContainers = blobServiceClient.GetBlobContainers();
 
-        // GET: ComunidadeController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
+            var s = from bc in blobContainers where bc.Name.Equals(containername) select bc;
 
-        // POST: ComunidadeController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
+            BlobContainerClient blobContainerClient = null;
+
+            if (s != null)
             {
-                return RedirectToAction(nameof(Index));
+                blobContainerClient = blobServiceClient.GetBlobContainerClient(containername);
             }
-            catch
+            else
             {
-                return View();
+                ModelState.AddModelError(string.Empty, "Impossível fazer upload no momento!");
             }
+
+            var filename = Path.GetFileName(file.FileName);
+            BlobClient blobClient = blobContainerClient.GetBlobClient(filename);
+            FileStream filestream = new FileStream(filename, FileMode.OpenOrCreate, FileAccess.Read);
+            blobClient.Upload(filestream, true);
+            filestream.Flush();
+
+            var url = blobClient.Uri.AbsoluteUri;
+
+            
+            return View("Index");
+
         }
+        
     }
 }
