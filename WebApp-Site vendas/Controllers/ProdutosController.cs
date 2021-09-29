@@ -100,7 +100,6 @@ namespace WebApp_Site_vendas.Controllers
 
             var carrinho = _carrinhocontext.Carrinho.Where(c => c.ClienteId == utilizador.UtilizadorId).FirstOrDefault();
 
-
             Encomenda novaEnc = new Encomenda();
             novaEnc.DataEncomenda = DateTime.Now;
             novaEnc.ProdutoId = carrinho.ProdutoId;
@@ -111,14 +110,18 @@ namespace WebApp_Site_vendas.Controllers
             _context.Add(novaEnc);
             _context.SaveChanges();
 
-            
-            ////envio da Queue na concusão da encomenda 
-            ///
-            //QueueClient queueClient = new QueueClient("DefaultEndpointsProtocol=https;AccountName=asprojeto;AccountKey=a0B+PPewtIG4+ngBo/4uXdEnNq/RGCvVESJat3kcNOdmYTydATc8ik9Y7oumfAJOEJXvfyF5lP3zjOGROOPguA==;EndpointSuffix=core.windows.net", "amandaqueue");
-            //string mensagem = novaEnc.EncomendaId.ToString();
-            //string mensagem1 = novaEnc.Utilizador.Nome;
+            _carrinhocontext.Remove(carrinho);
+            _carrinhocontext.SaveChanges();
 
-            //queueClient.SendMessage("Encomenda nº: " + mensagem + " - Cliente: " + mensagem1);
+
+            //envio da Queue na concusão da encomenda 
+            
+            QueueClient queueClient = new QueueClient("DefaultEndpointsProtocol=https;AccountName=asprojeto;AccountKey=a0B+PPewtIG4+ngBo/4uXdEnNq/RGCvVESJat3kcNOdmYTydATc8ik9Y7oumfAJOEJXvfyF5lP3zjOGROOPguA==;EndpointSuffix=core.windows.net", "amandaqueue");
+            string mensagem = novaEnc.EncomendaId.ToString();
+            string mensagem1 = novaEnc.Utilizador.Nome;
+
+            queueClient.SendMessage("Encomenda nº: " + mensagem + " - Cliente: " + mensagem1);
+
 
             return RedirectToAction("ConfirmacaoEncomenda", "Encomendas", novaEnc);
         }

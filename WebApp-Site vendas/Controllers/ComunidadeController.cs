@@ -55,15 +55,20 @@ namespace WebApp_Site_vendas.Controllers
                 ModelState.AddModelError(string.Empty, "Impossível fazer upload no momento!");
             }
 
+
+            
             var filename = Path.GetFileName(file.FileName);
-            BlobClient blobClient = blobContainerClient.GetBlobClient(filename);
-            FileStream filestream = new FileStream(filename, FileMode.OpenOrCreate, FileAccess.Read);
-            blobClient.Upload(filestream, true);
-            filestream.Flush();
+            BlobClient blobClient = blobContainerClient.GetBlobClient("clienteimage" + filename);
+            
+            using (Stream filenew = file.OpenReadStream())
+            {
+                blobClient.Upload(filenew);
+            }
 
             var url = blobClient.Uri.AbsoluteUri;
 
-            
+            ViewBag.Foto = url;
+
             return View("Index");
 
         }
