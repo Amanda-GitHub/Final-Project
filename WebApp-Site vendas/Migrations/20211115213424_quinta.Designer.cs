@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebApp_Site_vendas.Data;
 
 namespace WebApp_Site_vendas.Migrations
 {
     [DbContext(typeof(DataBaseCarrinhoContext))]
-    partial class DataBaseCarrinhoContextModelSnapshot : ModelSnapshot
+    [Migration("20211115213424_quinta")]
+    partial class quinta
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -48,26 +50,7 @@ namespace WebApp_Site_vendas.Migrations
 
                     b.HasKey("CarrinhoId");
 
-                    b.ToTable("Carrinho");
-                });
-
-            modelBuilder.Entity("WebApp_Site_vendas.Models.CarrinhoItem", b =>
-                {
-                    b.Property<string>("ItemId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("CarrinhoId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("ProdutoId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Quantidade")
-                        .HasColumnType("int");
-
-                    b.HasKey("ItemId");
-
-                    b.ToTable("CarrinhoItem");
+                    b.ToTable("CarrinhoCompras");
                 });
 #pragma warning restore 612, 618
         }

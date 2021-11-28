@@ -69,24 +69,60 @@ namespace WebApp_Site_vendas.Controllers
         {
             var itens = _context.Produtos.Include(c => c.Categoria).FirstOrDefault(m => m.ProdutoId == id);
             var utilizador = _context.Utilizadores.FirstOrDefault(e => e.Email == User.Identity.Name);
+            var cart = _carrinhocontext.Carrinho.FirstOrDefault(c => c.ProdutoId == id);
 
-            CarrinhoCompras cart = new CarrinhoCompras();           
-            cart.CarrinhoId = Guid.NewGuid();
-            cart.ProdutoId = itens.ProdutoId;
-            cart.ClienteId = utilizador.UtilizadorId;
-            cart.Foto = itens.Foto;
-            cart.Quantidade = 1;
-            cart.ValorTotal = itens.Preco;
-            cart.PrecoUnit = itens.Preco;
-            cart.Nome = itens.NomeComum;
+            //if (cartItem == null)
+            //{
+            //    cartItem = new CarrinhoItem();
+            //    {
+            //        cartItem.ItemId = Guid.NewGuid().ToString();
+            //        cartItem.ProdutoId = itens.ProdutoId;
+            //        cartItem.CarrinhoId = utilizador.Email;
+            //        cartItem.Quantidade = 1;
 
-            _carrinhocontext.Add(cart);
+            //    }
+
+            //    _carrinhocontext.Add(cartItem);
+
+            //}
+
+            //else
+            //{
+            //    cartItem.Quantidade++;
+            //}
+            //_carrinhocontext.SaveChanges();
+
+            //var itensUtilizador = _carrinhocontext.CarrinhoItem.Where(c => c.CarrinhoId == utilizador.Email).ToList();
+
+            //return View(itensUtilizador);
+
+
+            if (cart == null)
+            {
+                cart = new CarrinhoCompras();
+                {
+                    cart.CarrinhoId = Guid.NewGuid();
+                    cart.ProdutoId = itens.ProdutoId;
+                    cart.ClienteId = utilizador.UtilizadorId;
+                    cart.Foto = itens.Foto;
+                    cart.Quantidade = 1;
+                    cart.ValorTotal = itens.Preco;
+                    cart.PrecoUnit = itens.Preco;
+                    cart.Nome = itens.NomeComum;
+                }
+
+                _carrinhocontext.Add(cart);
+            }
+            else
+            {
+                cart.Quantidade++;
+                cart.ValorTotal = cart.Quantidade * cart.PrecoUnit;
+            }
+
             _carrinhocontext.SaveChanges();
 
-
             var itensUtilizador = _carrinhocontext.Carrinho.Where(c => c.ClienteId == utilizador.UtilizadorId);
-
-            ViewBag.CarrinhoTotal = itensUtilizador.Sum(s => s.PrecoUnit).ToString();
+            ViewBag.CarrinhoTotal = itensUtilizador.Sum(s => s.ValorTotal).ToString();
 
             return View(itensUtilizador.ToList());
 
@@ -100,30 +136,27 @@ namespace WebApp_Site_vendas.Controllers
 
             var carrinho = _carrinhocontext.Carrinho.Where(c => c.ClienteId == utilizador.UtilizadorId).FirstOrDefault();
 
-            Encomenda novaEnc = new Encomenda();
-            novaEnc.DataEncomenda = DateTime.Now;
-            novaEnc.ProdutoId = carrinho.ProdutoId;
-            novaEnc.Quantidade = carrinho.Quantidade;
-            novaEnc.ValorTotal = carrinho.ValorTotal;
-            novaEnc.UtilizadorId = carrinho.ClienteId;
-
-            _context.Add(novaEnc);
-            _context.SaveChanges();
-
-            _carrinhocontext.Remove(carrinho);
-            _carrinhocontext.SaveChanges();
 
 
-            //envio da Queue na concusão da encomenda 
+
+            //Encomenda novaEnc = new Encomenda();
+            //novaEnc.DataEncomenda = DateTime.Now;
+            //novaEnc.ProdutoId = carrinho.ProdutoId;
+            //novaEnc.Quantidade = carrinho.Quantidade;
+            //novaEnc.ValorTotal = carrinho.ValorTotal;
+            //novaEnc.UtilizadorId = carrinho.ClienteId;
+
+            //_context.Add(novaEnc);
+            //_context.SaveChanges();
+
+            //_carrinhocontext.Remove(carrinho);
+            //_carrinhocontext.SaveChanges();
+
+
             
-            QueueClient queueClient = new QueueClient("DefaultEndpointsProtocol=https;AccountName=asprojeto;AccountKey=a0B+PPewtIG4+ngBo/4uXdEnNq/RGCvVESJat3kcNOdmYTydATc8ik9Y7oumfAJOEJXvfyF5lP3zjOGROOPguA==;EndpointSuffix=core.windows.net", "amandaqueue");
-            string mensagem = novaEnc.EncomendaId.ToString();
-            string mensagem1 = novaEnc.Utilizador.Nome;
-
-            queueClient.SendMessage("Encomenda nº: " + mensagem + " - Cliente: " + mensagem1);
 
 
-            return RedirectToAction("ConfirmacaoEncomenda", "Encomendas", novaEnc);
+            return RedirectToAction("ConfirmacaoEncomenda", "Encomendas");
         }
 
     }

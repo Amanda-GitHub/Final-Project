@@ -31,5 +31,7 @@ namespace Projeto_CLOUD_45_2021.Models
 
         public ICollection<Fatura> Faturas { get; set; }
 
+        public ICollection<Item_Encomenda> Itens_Encomenda { get; set; }
+
     }
 }

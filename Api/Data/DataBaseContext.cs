@@ -20,6 +20,7 @@ namespace Api.Data
         public DbSet<Fatura> Faturas { get; set; }
         public DbSet<Produto> Produtos { get; set; }
         public DbSet<Utilizador> Utilizadores { get; set; }
+        public DbSet<Item_Encomenda> Itens_Encomenda { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

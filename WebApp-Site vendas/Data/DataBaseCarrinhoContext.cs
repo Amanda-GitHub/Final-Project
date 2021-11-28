@@ -24,5 +24,7 @@ namespace WebApp_Site_vendas.Data
 
         public DbSet<CarrinhoCompras> Carrinho { get; set; }
 
+        public DbSet<CarrinhoItem> CarrinhoItem { get; set; }
+
     }
 }
