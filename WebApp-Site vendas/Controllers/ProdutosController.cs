@@ -71,31 +71,6 @@ namespace WebApp_Site_vendas.Controllers
             var utilizador = _context.Utilizadores.FirstOrDefault(e => e.Email == User.Identity.Name);
             var cart = _carrinhocontext.Carrinho.FirstOrDefault(c => c.ProdutoId == id);
 
-            //if (cartItem == null)
-            //{
-            //    cartItem = new CarrinhoItem();
-            //    {
-            //        cartItem.ItemId = Guid.NewGuid().ToString();
-            //        cartItem.ProdutoId = itens.ProdutoId;
-            //        cartItem.CarrinhoId = utilizador.Email;
-            //        cartItem.Quantidade = 1;
-
-            //    }
-
-            //    _carrinhocontext.Add(cartItem);
-
-            //}
-
-            //else
-            //{
-            //    cartItem.Quantidade++;
-            //}
-            //_carrinhocontext.SaveChanges();
-
-            //var itensUtilizador = _carrinhocontext.CarrinhoItem.Where(c => c.CarrinhoId == utilizador.Email).ToList();
-
-            //return View(itensUtilizador);
-
 
             if (cart == null)
             {
@@ -129,6 +104,94 @@ namespace WebApp_Site_vendas.Controllers
         }
 
         [Authorize]
+        public async Task<IActionResult> AddItemCarrinho(int? id)
+        {
+            var utilizador = _context.Utilizadores.FirstOrDefault(e => e.Email == User.Identity.Name);
+            var itensUtilizador = _carrinhocontext.Carrinho.Where(c => c.ClienteId == utilizador.UtilizadorId);
+            var cart = _carrinhocontext.Carrinho.FirstOrDefault(c => c.ProdutoId == id);
+
+            try
+            {
+                cart.Quantidade++;
+                cart.ValorTotal = cart.Quantidade * cart.PrecoUnit;
+                _carrinhocontext.SaveChanges();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            ViewBag.CarrinhoTotal = itensUtilizador.Sum(s => s.ValorTotal).ToString();
+
+            return View("AddCarrinho", itensUtilizador.ToList());
+        }
+
+        [Authorize]
+        public async Task<IActionResult> DiminuirItemCarrinho(int? id)
+        {
+            var utilizador = _context.Utilizadores.FirstOrDefault(e => e.Email == User.Identity.Name);
+            var itensUtilizador = _carrinhocontext.Carrinho.Where(c => c.ClienteId == utilizador.UtilizadorId);
+            var cart = _carrinhocontext.Carrinho.FirstOrDefault(c => c.ProdutoId == id);
+
+            try
+            {
+                cart.Quantidade--;
+                cart.ValorTotal = cart.Quantidade * cart.PrecoUnit;
+                _carrinhocontext.SaveChanges();
+
+                if (cart.Quantidade < 1)
+                {
+                    await RemoverItemCarrinho(cart.ProdutoId);
+                }
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            ViewBag.CarrinhoTotal = itensUtilizador.Sum(s => s.ValorTotal).ToString();
+
+            return View("AddCarrinho", itensUtilizador.ToList());
+        }
+
+        [Authorize]
+        public async Task<IActionResult> RemoverItemCarrinho(int? id)
+        {
+            var utilizador = _context.Utilizadores.FirstOrDefault(e => e.Email == User.Identity.Name);
+            var itensUtilizador = _carrinhocontext.Carrinho.Where(c => c.ClienteId == utilizador.UtilizadorId);
+            var cartItem = _carrinhocontext.Carrinho.FirstOrDefault(c => c.ProdutoId == id);
+
+            try
+            {
+                _carrinhocontext.Remove(cartItem);
+                _carrinhocontext.SaveChanges();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            ViewBag.CarrinhoTotal = itensUtilizador.Sum(s => s.ValorTotal).ToString();
+
+            return View("AddCarrinho", itensUtilizador.ToList());
+        }
+
+        [Authorize]
+        public async Task<IActionResult> MeuCarrinho()
+        {
+            var utilizador = _context.Utilizadores.FirstOrDefault(e => e.Email == User.Identity.Name);
+            var itensUtilizador = _carrinhocontext.Carrinho.Where(c => c.ClienteId == utilizador.UtilizadorId);
+
+            ViewBag.CarrinhoTotal = itensUtilizador.Sum(s => s.ValorTotal).ToString();
+            return View("MeuCarrinho", itensUtilizador.ToList());
+        }
+
+
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> Encomendar()
         {
@@ -153,7 +216,7 @@ namespace WebApp_Site_vendas.Controllers
             //_carrinhocontext.SaveChanges();
 
 
-            
+
 
 
             return RedirectToAction("ConfirmacaoEncomenda", "Encomendas");
