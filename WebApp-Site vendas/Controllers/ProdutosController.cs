@@ -196,30 +196,41 @@ namespace WebApp_Site_vendas.Controllers
         public async Task<IActionResult> Encomendar()
         {
             var utilizador = _context.Utilizadores.FirstOrDefault(e => e.Email == User.Identity.Name);
+            var carrinhoUtilizador = _carrinhocontext.Carrinho.Where(c => c.ClienteId == utilizador.UtilizadorId);
+            var carrinho = carrinhoUtilizador.FirstOrDefault(); //corrigir, só está a apagar o primeiro, obviamente!
 
-            var carrinho = _carrinhocontext.Carrinho.Where(c => c.ClienteId == utilizador.UtilizadorId).FirstOrDefault();
+            List<CarrinhoCompras> listaItens = carrinhoUtilizador.ToList();
+            Item_Encomenda novoItemEncomenda = new Item_Encomenda();
+
+            List<Item_Encomenda> itensEncomenda = new List<Item_Encomenda>();
+
+            foreach (var item in listaItens)
+            {
+                novoItemEncomenda.ProdutoId = item.ProdutoId;
+                novoItemEncomenda.Quantidade = item.Quantidade;
+                novoItemEncomenda.Preco = item.PrecoUnit;
+
+                _context.Add(novoItemEncomenda);
+                itensEncomenda.Add(novoItemEncomenda);
+            }
+            
+            Encomenda novaEnc = new Encomenda();
+            novaEnc.DataEncomenda = DateTime.Now;
+            novaEnc.UtilizadorId = utilizador.UtilizadorId;
+            novaEnc.ValorTotal = itensEncomenda.Sum(p => p.Preco * p.Quantidade); //corrigir!
+            novaEnc.UtilizadorId = utilizador.UtilizadorId;
+            novaEnc.ProdutoId = novoItemEncomenda.ProdutoId;
+            novaEnc.Itens_Encomenda = itensEncomenda;
+            _context.Add(novaEnc);
+
+            _context.SaveChanges();
 
 
-
-
-            //Encomenda novaEnc = new Encomenda();
-            //novaEnc.DataEncomenda = DateTime.Now;
-            //novaEnc.ProdutoId = carrinho.ProdutoId;
-            //novaEnc.Quantidade = carrinho.Quantidade;
-            //novaEnc.ValorTotal = carrinho.ValorTotal;
-            //novaEnc.UtilizadorId = carrinho.ClienteId;
-
-            //_context.Add(novaEnc);
-            //_context.SaveChanges();
-
-            //_carrinhocontext.Remove(carrinho);
-            //_carrinhocontext.SaveChanges();
-
-
-
-
+            _carrinhocontext.Remove(carrinho);
+            _carrinhocontext.SaveChanges();
 
             return RedirectToAction("ConfirmacaoEncomenda", "Encomendas");
+
         }
 
     }
